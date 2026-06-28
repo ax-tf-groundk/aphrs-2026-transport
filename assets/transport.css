@@ -264,6 +264,7 @@ h1,h2,h3,h4{line-height:1.16;letter-spacing:-.4px;text-wrap:balance}
 .corp-foot{background:var(--navy);color:#aeb8cc;font-size:13px;padding:40px 0 46px;border-top:3px solid var(--red)}
 .corp-foot .top{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-start;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.12)}
 .corp-foot .brand .logo{box-shadow:none}
+.corp-foot .brand img{filter:brightness(0) invert(1)} /* dark footer: official color logo -> clean white */
 .corp-foot .brand .wm b{color:#fff}
 .corp-foot .brand .wm small{color:#8e9bb5}
 .corp-foot .fnav{display:flex;gap:18px;flex-wrap:wrap}
