@@ -423,7 +423,7 @@ h1,h2,h3,h4{line-height:1.16;letter-spacing:-.4px;text-wrap:balance}
    ============================================================ */
 .detail-hero{position:relative;overflow:hidden;color:#fff;min-height:250px;display:flex;align-items:flex-end}
 .detail-hero .bgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
-.detail-hero::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(14,28,56,.32),rgba(11,20,42,.86))}
+.detail-hero::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(11,20,42,.55),rgba(11,20,42,.88))}
 .detail-hero .inner{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:38px 24px 28px;width:100%}
 .detail-hero .crumb{font-size:12.5px;color:rgba(255,255,255,.78);margin-bottom:12px}
 .detail-hero .crumb a{color:rgba(255,255,255,.78)}
