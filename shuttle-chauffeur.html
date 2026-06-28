@@ -52,8 +52,20 @@
       <button class="head-link hide-sm" id="lookupBtn" type="button">My Booking</button>
       <a class="head-link ext hide-sm" href="https://aphrs2026.com" target="_blank" rel="noopener">Official Site</a>
     </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="메뉴 열기" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+
+<nav class="mobile-nav" id="mobileNav" aria-label="모바일 메뉴">
+  <a href="shuttle-airport-hotel.html">공항 → 호텔</a>
+  <a href="shuttle-hotel-airport.html">호텔 → 공항</a>
+  <a href="shuttle-venue.html">행사장 셔틀</a>
+  <a href="shuttle-chauffeur.html" class="active">전용차량</a>
+  <div class="mn-divider"></div>
+  <a class="mn-ext" href="https://aphrs2026.com" target="_blank" rel="noopener">공식 사이트 aphrs2026.com ↗</a>
+</nav>
 
 <main id="main">
 
@@ -216,5 +228,28 @@
 </div>
 
 <script src="assets/app.js?v=2026.06.27.5"></script>
+
+<script>
+(function(){
+  var toggle = document.getElementById('navToggle');
+  var nav    = document.getElementById('mobileNav');
+  if(!toggle || !nav) return;
+  toggle.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  // ESC 닫기
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && nav.classList.contains('open')){
+      nav.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+  });
+})();
+</script>
 </body>
 </html>

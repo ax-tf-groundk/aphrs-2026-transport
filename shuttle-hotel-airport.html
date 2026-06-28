@@ -6,10 +6,10 @@
 <meta http-equiv="Cache-Control" content="no-cache">
 <title>Hotel → Airport Departure Shuttle — APHRS 2026</title>
 <meta name="description" content="APHRS 2026 Hotel → Airport departure shuttle (paid). Haeundae official hotels to Gimhae Int'l Airport. Oct 24–25, 2026.">
-<meta name="version" content="2026.06.28.3">
+<meta name="version" content="2026.06.28.4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="assets/transport.css?v=2026.06.28.3">
+<link rel="stylesheet" href="assets/transport.css?v=2026.06.28.4">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -38,8 +38,20 @@
       <button class="head-link hide-sm" id="lookupBtn" type="button">My Booking</button>
       <a class="head-link ext hide-sm" href="https://aphrs2026.com" target="_blank" rel="noopener">Official Site</a>
     </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="메뉴 열기" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+
+<nav class="mobile-nav" id="mobileNav" aria-label="모바일 메뉴">
+  <a href="shuttle-airport-hotel.html">공항 → 호텔</a>
+  <a href="shuttle-hotel-airport.html" class="active">호텔 → 공항</a>
+  <a href="shuttle-venue.html">행사장 셔틀</a>
+  <a href="shuttle-chauffeur.html">전용차량</a>
+  <div class="mn-divider"></div>
+  <a class="mn-ext" href="https://aphrs2026.com" target="_blank" rel="noopener">공식 사이트 aphrs2026.com ↗</a>
+</nav>
 
 <main id="main">
 
@@ -234,7 +246,7 @@
       <b>GroundK Co., Ltd</b> · CEO Jang Dong-won · Business Reg. 238-81-00429<br>
       405, 45 Centum Dong-ro, Haeundae-gu, Busan 48059, Korea · Tel +82-2-863-3540 · Fax +82-70-8275-3540 · ops@groundk.com<br>
       RIDEUS is GroundK's Transportation × Travel platform. All transactions, exchanges, refunds and complaints are handled by GroundK.<br>
-      <span class="ver">© 2026 GroundK · APHRS 2026 Participant Transport Portal (Concept Demo) · ver build 2026.06.28.3</span>
+      <span class="ver">© 2026 GroundK · APHRS 2026 Participant Transport Portal (Concept Demo) · ver build 2026.06.28.4</span>
     </div>
   </div>
 </footer>
@@ -254,7 +266,7 @@
   </div>
 </div>
 
-<script src="assets/app.js?v=2026.06.28.3"></script>
+<script src="assets/app.js?v=2026.06.28.4"></script>
 <script>
 /* booking widget — demo search (no backend) */
 (function(){
@@ -269,6 +281,29 @@
     r.innerHTML = '✓ <b>' + from + ' → ' + to + '</b> · ' + date + ' · ' + pax +
       ' — Demo result: seats available on this route. (Concept demo — no actual booking or payment is processed.)';
     r.classList.add('show');
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var toggle = document.getElementById('navToggle');
+  var nav    = document.getElementById('mobileNav');
+  if(!toggle || !nav) return;
+  toggle.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  // ESC 닫기
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && nav.classList.contains('open')){
+      nav.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
   });
 })();
 </script>
