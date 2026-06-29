@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  var SITE_VERSION = '2026.06.28.10';
+  var SITE_VERSION = '2026.06.28.11';
   try { console.log('%cRIDEUS Events · APHRS 2026 · build ' + SITE_VERSION, 'color:#e8344e;font-weight:700'); } catch (e) {}
 
   var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -70,5 +70,24 @@
     initReveal();
     initLang();
     initLookup();
+    initDemoBanner();
   });
+
+  /* ---- demo banner close ---- */
+  function initDemoBanner() {
+    var banner = document.querySelector('.demo-banner');
+    if (!banner) return;
+    var btn = document.createElement('button');
+    btn.className = 'demo-banner-close';
+    btn.setAttribute('aria-label', '닫기');
+    btn.innerHTML = '✕';
+    btn.addEventListener('click', function () {
+      banner.style.display = 'none';
+      try { sessionStorage.setItem('demo-banner-closed', '1'); } catch(e) {}
+    });
+    banner.appendChild(btn);
+    try {
+      if (sessionStorage.getItem('demo-banner-closed') === '1') banner.style.display = 'none';
+    } catch(e) {}
+  }
 })();
