@@ -777,6 +777,11 @@ h1,h2,h3,h4{line-height:1.16;letter-spacing:-.4px;text-wrap:balance}
 .section-block:first-of-type{padding-top:0}
 .section-alt{background:#f7f8fb;padding:64px 0}
 
+/* 히어로 바로 뒤 첫 섹션은 상단 간격 복원 */
+.detail-hero + * .section-block:first-child,
+.detail-hero ~ .page-main .section-block:first-child,
+.page-main > .section-block:first-child{padding-top:64px}
+
 /* headings */
 .section-title{font-size:26px;font-weight:800;color:var(--ink);letter-spacing:-.5px;margin-bottom:24px}
 
@@ -957,6 +962,7 @@ h1,h2,h3,h4{line-height:1.16;letter-spacing:-.4px;text-wrap:balance}
   .section.alt { padding:48px 0; }
   .section-block { padding:0 0 44px; }
   .section-alt { padding:44px 0; }
+  .page-main > .section-block:first-child { padding-top:48px; }
 
   /* ── 카드 내부 패딩 ── */
   .svc-card { padding:20px 18px 18px; }
