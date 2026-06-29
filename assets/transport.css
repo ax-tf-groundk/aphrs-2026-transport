@@ -76,10 +76,12 @@ h1,h2,h3,h4{line-height:1.16;letter-spacing:-.4px;text-wrap:balance}
 @media(max-width:720px){.brand .wm small{display:none}.head-link.hide-sm{display:none}}
 
 /* ---------- SECTION HEADINGS ---------- */
-.section{padding:0 0 64px}
-.section:first-of-type{padding-top:0}
-.section.tight{padding:0 0 40px}
+.section{padding:64px 0}
+.section + .section{padding-top:0}
 .section.alt{padding:64px 0;background:#f7f8fb}
+.section.alt + .section{padding-top:64px}
+.section.tight{padding:40px 0}
+.section.tight + .section.tight{padding-top:0}
 .kicker{font-size:11.5px;font-weight:700;color:var(--red);letter-spacing:0.8px;text-transform:uppercase;display:block;margin-bottom:11px;border-left:3px solid var(--red);padding-left:10px}
 .sec-h{font-size:28px;font-weight:800;color:var(--ink);letter-spacing:-.6px}
 .sec-sub{margin-top:9px;color:var(--muted);font-size:15.5px;max-width:64ch;line-height:1.6}
@@ -773,14 +775,11 @@ h1,h2,h3,h4{line-height:1.16;letter-spacing:-.4px;text-wrap:balance}
 /* layout */
 .page-main{display:block}
 .container{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-.section-block{padding:0 0 64px}
-.section-block:first-of-type{padding-top:0}
+.section-block{padding:64px 0}
+.section-block + .section-block{padding-top:0}
 .section-alt{background:#f7f8fb;padding:64px 0}
+.section-alt + .section-block{padding-top:64px}
 
-/* 히어로 바로 뒤 첫 섹션은 상단 간격 복원 */
-.detail-hero + * .section-block:first-child,
-.detail-hero ~ .page-main .section-block:first-child,
-.page-main > .section-block:first-child{padding-top:64px}
 
 /* headings */
 .section-title{font-size:26px;font-weight:800;color:var(--ink);letter-spacing:-.5px;margin-bottom:24px}
@@ -957,12 +956,15 @@ h1,h2,h3,h4{line-height:1.16;letter-spacing:-.4px;text-wrap:balance}
   .price-table td { padding:9px 10px; font-size:13px; }
 
   /* ── 섹션 패딩 ── */
-  .section { padding:0 0 48px; }
-  .section.tight { padding:0 0 28px; }
+  .section { padding:48px 0; }
+  .section + .section { padding-top:0; }
   .section.alt { padding:48px 0; }
-  .section-block { padding:0 0 44px; }
-  .section-alt { padding:44px 0; }
-  .page-main > .section-block:first-child { padding-top:48px; }
+  .section.alt + .section { padding-top:48px; }
+  .section.tight { padding:28px 0; }
+  .section-block { padding:48px 0; }
+  .section-block + .section-block { padding-top:0; }
+  .section-alt { padding:48px 0; }
+  .section-alt + .section-block { padding-top:48px; }
 
   /* ── 카드 내부 패딩 ── */
   .svc-card { padding:20px 18px 18px; }
