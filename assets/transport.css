@@ -82,10 +82,10 @@ h1,h2,h3,h4{line-height:1.16;letter-spacing:-.4px;text-wrap:balance}
 .section.alt + .section{padding-top:64px}
 .section.tight{padding:40px 0}
 .section.tight + .section.tight{padding-top:0}
-.kicker{font-size:11.5px;font-weight:700;color:var(--red);letter-spacing:0.8px;text-transform:uppercase;display:block;margin-bottom:11px;border-left:3px solid var(--red);padding-left:10px}
+.kicker{font-size:11.5px;font-weight:700;color:var(--red);letter-spacing:0.8px;text-transform:uppercase;display:block;margin-bottom:8px;border-left:3px solid var(--red);padding-left:10px}
 .sec-h{font-size:28px;font-weight:800;color:var(--ink);letter-spacing:-.6px}
-.sec-sub{margin-top:9px;color:var(--muted);font-size:15.5px;max-width:64ch;line-height:1.6}
-.sec-head{margin-bottom:30px;max-width:780px}
+.sec-sub{margin-top:8px;color:var(--muted);font-size:15.5px;max-width:64ch;line-height:1.6}
+.sec-head{margin-bottom:40px;max-width:780px}
 
 /* ---------- HERO ---------- */
 .t-hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);
@@ -782,7 +782,7 @@ h1,h2,h3,h4{line-height:1.16;letter-spacing:-.4px;text-wrap:balance}
 
 
 /* headings */
-.section-title{font-size:26px;font-weight:800;color:var(--ink);letter-spacing:-.5px;margin-bottom:24px}
+.section-title{font-size:26px;font-weight:800;color:var(--ink);letter-spacing:-.5px;margin-bottom:40px}
 
 /* arr-grid (route cards) */
 .arr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-top:16px}
