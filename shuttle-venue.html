@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -6,14 +6,36 @@
 <meta http-equiv="Cache-Control" content="no-cache">
 <title>행사장 셔틀 — 호텔↔BEXCO — APHRS 2026 부산 교통 | RIDEUS Events</title>
 <meta name="description" content="APHRS 2026 등록 참가자 무료 행사장 셔틀. 공식호텔↔BEXCO, 2026.10.21~24 운행. 노선·시간표·정류장 안내.">
-<meta name="version" content="2026.06.28.17">
-<link rel="stylesheet" href="assets/transport.css?v=2026.06.28.17">
+<meta name="version" content="2026.06.30.4">
+<link rel="stylesheet" href="assets/transport.css?v=2026.06.30.4">
+<style>
+  /* Venue schedule — 3개 노선 표를 데스크탑에서 3열로 배치 */
+  .sched-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start;margin-bottom:14px;border-top:1px solid var(--line);padding-top:26px}
+  .sched-grid h3{margin-top:0;color:var(--navy)!important;text-align:center}
+  .sched-grid .sched-table{margin-bottom:0;border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden}
+  .sched-grid .sched-table table{width:100%}
+  .sched-grid .sched-table th,.sched-grid .sched-table td{padding:11px 14px}
+  .sched-grid .sched-table tbody tr:last-child td{border-bottom:none}
+  @media(max-width:920px){.sched-grid{grid-template-columns:1fr}}
+  /* STOPS 카드 — 호텔명 한·영 병기, 현재 토글 언어가 primary(16px)·다른 언어는 서브(12.5px). order로 primary를 항상 위로 */
+  .dest-name{display:flex;flex-direction:column;line-height:1.25;margin-bottom:2px}
+  .dest-name .nm-ko,.dest-name .nm-en{margin:0}
+  .dest-name .nm-ko{font-size:16px;color:var(--ink);font-weight:700}
+  .dest-name .nm-en{font-size:12.5px;color:var(--muted);font-weight:500}
+  html[data-ui-lang="en"] .dest-name .nm-ko{order:2;font-size:12.5px;color:var(--muted);font-weight:500}
+  html[data-ui-lang="en"] .dest-name .nm-en{order:1;font-size:16px;color:var(--ink);font-weight:700}
+  /* 설명 — 토글된 한 언어만 */
+  .dest-body .en-only{display:none}
+  html[data-ui-lang="en"] .dest-body .ko-only{display:none!important}
+  html[data-ui-lang="en"] .dest-body .en-only{display:block!important}
+</style>
 </head>
 <body>
-<a class="skip" href="#main">본문 바로가기</a>
+<a class="skip" href="#main"><span class="ko-only">본문 바로가기</span><span class="en-only">Skip to main content</span></a>
 
 <div class="demo-banner">
-  GroundK 콘셉트 데모 — 실제 예약·결제는 처리되지 않습니다. APHRS 2026 공식 사이트가 아닙니다(<b>aphrs2026.com</b> 별도).
+  <span class="ko-only">GroundK 콘셉트 데모 — 실제 예약·결제는 처리되지 않습니다. APHRS 2026 공식 사이트가 아닙니다(<b>aphrs2026.com</b> 별도).</span>
+  <span class="en-only">GroundK Concept Demo — No actual bookings or payments processed. This is not the official APHRS 2026 website (<b>aphrs2026.com</b>).</span>
 </div>
 
 <header class="site-head">
@@ -24,17 +46,26 @@
       <span class="btag">Transportation</span>
     </a>
     <nav class="nav" aria-label="셔틀 노선">
-      <a href="shuttle-airport-hotel.html">공항 → 호텔</a>
-      <a href="shuttle-hotel-airport.html">호텔 → 공항</a>
-      <a href="shuttle-venue.html" class="active">행사장 셔틀</a>
-      <a href="shuttle-chauffeur.html">전용차량</a>
+      <a href="shuttle-airport-hotel.html"><span class="ko-only">공항 → 호텔</span><span class="en-only">Airport → Hotel</span></a>
+      <a href="shuttle-hotel-airport.html"><span class="ko-only">호텔 → 공항</span><span class="en-only">Hotel → Airport</span></a>
+      <a href="shuttle-venue.html" class="active"><span class="ko-only">행사장 셔틀</span><span class="en-only">Venue Shuttle</span></a>
+      <a href="shuttle-chauffeur.html"><span class="ko-only">전용차량</span><span class="en-only">Chauffeur</span></a>
+      <div class="nav-dd">
+        <button class="nav-dd-btn" type="button" aria-haspopup="true" aria-expanded="false"><span class="ko-only">여행 정보</span><span class="en-only">Travel Info</span><span class="dd-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-dd-menu" role="menu">
+          <a href="travel.html#arrival" role="menuitem"><span class="ko-only">입국 안내</span><span class="en-only">Arrival Guide</span></a>
+          <a href="travel.html#ktx" role="menuitem"><span class="ko-only">KTX 예매</span><span class="en-only">KTX Booking</span></a>
+          <a href="travel.html#baggage" role="menuitem"><span class="ko-only">짐 배송</span><span class="en-only">Baggage Delivery</span></a>
+          <a href="travel.html#esim" role="menuitem"><span class="ko-only">유심 / eSIM</span><span class="en-only">SIM / eSIM</span></a>
+        </div>
+      </div>
     </nav>
     <div class="head-right">
       <button class="lang" id="langToggle" type="button" aria-label="언어 전환 (데모)">
-        🌐 <span class="seg on" data-lang="ko">KO</span><span class="seg" data-lang="en">EN</span>
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg> <span class="seg on" data-lang="ko">KO</span><span class="seg" data-lang="en">EN</span>
       </button>
-      <button class="head-link hide-sm" id="lookupBtn" type="button">예약조회</button>
-      <a class="head-link ext hide-sm" href="https://aphrs2026.com" target="_blank" rel="noopener">공식 사이트</a>
+      <button class="head-link hide-sm" id="lookupBtn" type="button"><span class="ko-only">예약조회</span><span class="en-only">My Booking</span></button>
+      <a class="head-link ext hide-sm" href="https://aphrs2026.com" target="_blank" rel="noopener"><span class="ko-only">공식 사이트</span><span class="en-only">Official Site</span></a>
     </div>
     <button class="nav-toggle" id="navToggle" type="button" aria-label="메뉴 열기" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -43,12 +74,20 @@
 </header>
 
 <nav class="mobile-nav" id="mobileNav" aria-label="모바일 메뉴">
-  <a href="shuttle-airport-hotel.html">공항 → 호텔</a>
-  <a href="shuttle-hotel-airport.html">호텔 → 공항</a>
-  <a href="shuttle-venue.html" class="active">행사장 셔틀</a>
-  <a href="shuttle-chauffeur.html">전용차량</a>
+  <a href="shuttle-airport-hotel.html"><span class="ko-only">공항 → 호텔</span><span class="en-only">Airport → Hotel</span></a>
+  <a href="shuttle-hotel-airport.html"><span class="ko-only">호텔 → 공항</span><span class="en-only">Hotel → Airport</span></a>
+  <a href="shuttle-venue.html" class="active"><span class="ko-only">행사장 셔틀</span><span class="en-only">Venue Shuttle</span></a>
+  <a href="shuttle-chauffeur.html"><span class="ko-only">전용차량</span><span class="en-only">Chauffeur</span></a>
   <div class="mn-divider"></div>
-  <a class="mn-ext" href="https://aphrs2026.com" target="_blank" rel="noopener">공식 사이트 aphrs2026.com ↗</a>
+  <span class="mn-sub"><span class="ko-only">여행 정보</span><span class="en-only">Travel Info</span></span>
+  <a class="mn-child" href="travel.html#arrival"><span class="ko-only">입국 안내</span><span class="en-only">Arrival Guide</span></a>
+  <a class="mn-child" href="travel.html#ktx"><span class="ko-only">KTX 예매</span><span class="en-only">KTX Booking</span></a>
+  <a class="mn-child" href="travel.html#baggage"><span class="ko-only">짐 배송</span><span class="en-only">Baggage Delivery</span></a>
+  <a class="mn-child" href="travel.html#esim"><span class="ko-only">유심 / eSIM</span><span class="en-only">SIM / eSIM</span></a>
+  <div class="mn-divider"></div>
+  <a class="mn-ext" href="https://aphrs2026.com" target="_blank" rel="noopener"><span class="ko-only">공식 사이트 aphrs2026.com ↗</span><span class="en-only">Official Site aphrs2026.com ↗</span></a>
+  <div class="mn-divider"></div>
+  <button class="lang" type="button" aria-label="언어 전환 (데모)"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg> <span class="seg on" data-lang="ko">KO</span><span class="seg" data-lang="en">EN</span></button>
 </nav>
 
 <main id="main">
@@ -61,10 +100,11 @@
        onerror="this.onerror=null;this.src='assets/img/bexco.jpg'">
   <div class="inner">
     <nav class="crumb" aria-label="breadcrumb">
-      <a href="index.html">Home</a> › <a href="index.html#shuttle">Shuttles</a> › <span>행사장 셔틀</span>
+      <a href="index.html">Home</a> › <a href="index.html#shuttle">Shuttles</a> › <span><span class="ko-only">행사장 셔틀</span><span class="en-only">Venue Shuttle</span></span>
     </nav>
     <h1>Venue Shuttle <span style="font-size:.55em;font-weight:700;opacity:.85">Hotel ↔ BEXCO</span></h1>
-    <p class="dsub">등록 참가자 무료 셔틀. <b>공식호텔 ↔ BEXCO</b>, 10/21~24 운행.</p>
+    <p class="dsub ko-block">등록 참가자 무료 셔틀. <b>공식호텔 ↔ BEXCO</b>, 10/21~24 운행.</p>
+    <p class="dsub en-block">Free shuttle for registered attendees. <b>Official hotels ↔ BEXCO</b>. Oct 21–24.</p>
   </div>
 </section>
 
@@ -74,20 +114,48 @@
 <section class="section" aria-labelledby="rt-h">
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="kicker">운행 노선 · Routes</span>
-      <h2 class="sec-h" id="rt-h">호텔 ↔ BEXCO, 2개 순환 노선</h2>
-      <p class="sec-sub">전체 학회 기간(10/21~24) 동안 3개 공식호텔과 BEXCO를 연결하는 상시 순환 셔틀입니다.</p>
+      <h2 class="sec-h" id="rt-h">
+        <span class="ko-only">운행 노선</span>
+        <span class="en-only">Shuttle Routes</span>
+      </h2>
+      <p class="sec-sub ko-block">전체 학회 기간 동안 5개 공식호텔과 BEXCO를 2개 노선으로 나누어 운행합니다. 무료, 예약 불필요.</p>
+      <p class="sec-sub en-block">Two routes connect all 5 official hotels to BEXCO throughout the conference. Free, no reservation needed.</p>
     </div>
     <div class="route-rows">
       <div class="rt-card reveal d1">
-        <span class="rt-tag">Route A</span>
-        <div class="rt-path">Signiel <span class="ar" aria-hidden="true">→</span> Westin Josun <span class="ar" aria-hidden="true">→</span> Park Hyatt <span class="ar" aria-hidden="true">→</span> BEXCO</div>
-        <span class="rt-time">~20 min</span>
+        <span class="rt-tag"><span class="ko-only">A 노선</span><span class="en-only">Route A</span></span>
+        <div class="rt-path ko-only">파라다이스 <span class="ar" aria-hidden="true">→</span> 시그니엘 <span class="ar" aria-hidden="true">→</span> BEXCO</div>
+        <div class="rt-path en-only">Paradise <span class="ar" aria-hidden="true">→</span> Signiel <span class="ar" aria-hidden="true">→</span> BEXCO</div>
+        <span class="rt-time">~25 min</span>
       </div>
       <div class="rt-card reveal d2">
-        <span class="rt-tag">Route B</span>
-        <div class="rt-path">BEXCO <span class="ar" aria-hidden="true">→</span> Park Hyatt <span class="ar" aria-hidden="true">→</span> Westin Josun <span class="ar" aria-hidden="true">→</span> Signiel</div>
-        <span class="rt-time">~20 min</span>
+        <span class="rt-tag"><span class="ko-only">B 노선</span><span class="en-only">Route B</span></span>
+        <div class="rt-path ko-only">웨스틴조선 <span class="ar" aria-hidden="true">→</span> 파크하얏트 <span class="ar" aria-hidden="true">→</span> BEXCO</div>
+        <div class="rt-path en-only">Westin Josun <span class="ar" aria-hidden="true">→</span> Park Hyatt <span class="ar" aria-hidden="true">→</span> BEXCO</div>
+        <span class="rt-time">~25 min</span>
+      </div>
+      <div class="rt-card reveal d3" style="border-left-color:var(--navy)">
+        <span class="rt-tag" style="background:var(--navy)">
+          <span class="ko-only">귀환 (양 노선)</span><span class="en-only">Return (Both Routes)</span>
+        </span>
+        <div class="rt-path ko-only" style="font-size:.85em;display:block;line-height:1.9">
+          <b style="color:var(--navy)">B 방면</b> BEXCO <span class="ar">→</span> 파크하얏트 <span class="ar">→</span> 웨스틴조선<br>
+          <b style="color:var(--navy)">A 방면</b> BEXCO <span class="ar">→</span> 파라다이스 <span class="ar">→</span> 시그니엘
+        </div>
+        <div class="rt-path en-only" style="font-size:.85em;display:block;line-height:1.9">
+          <b style="color:var(--navy)">To B</b> BEXCO <span class="ar">→</span> Park Hyatt <span class="ar">→</span> Westin Josun<br>
+          <b style="color:var(--navy)">To A</b> BEXCO <span class="ar">→</span> Paradise <span class="ar">→</span> Signiel
+        </div>
+        <span class="rt-time">~25 min</span>
+      </div>
+    </div>
+    <div class="warn-box reveal" style="margin-top:18px">
+      <div class="wb-icon"><svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div>
+      <div class="wb-body">
+        <h4 class="ko-block">그랜드조선 해운대 투숙객 안내</h4>
+        <h4 class="en-block">For guests at Grand Josun Haeundae</h4>
+        <p class="ko-block">그랜드조선 해운대 투숙객께서는 행사장 셔틀 이용 시 <b>파라다이스 호텔 정거장</b>을 이용해 주세요. 그랜드조선 ↔ 파라다이스 호텔은 <b>도보 약 5분</b> 거리입니다.</p>
+        <p class="en-block">Guests at Grand Josun Haeundae: please board the event shuttle at the <b>Paradise Hotel</b> stop (~5 min walk from Grand Josun).</p>
       </div>
     </div>
   </div>
@@ -97,62 +165,114 @@
 <section class="section" style="padding-top:0" aria-labelledby="sc-h">
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="kicker">시간표 · Schedule</span>
-      <h2 class="sec-h" id="sc-h">일별 셔틀 시간표</h2>
-      <p class="sec-sub">학회 기간 전일(10/21~24) 운행. 당일 상황에 따라 시간표가 조정될 수 있습니다.</p>
+      <h2 class="sec-h" id="sc-h">
+        <span class="ko-only">운행 시간표 (10/21~24)</span>
+        <span class="en-only">Schedule (Oct 21–24)</span>
+      </h2>
+      <p class="sec-sub ko-block">두 노선이 동시에 별도 차량으로 운행합니다. 무료이며 예약 불필요. 출발 <b>10분 전</b> 정류장에서 대기해 주세요.</p>
+      <p class="sec-sub en-block">Both routes operate simultaneously with separate vehicles. Free, no reservation. Please arrive <b>10 min before departure</b>.</p>
     </div>
-    <div class="sched-table reveal">
-      <table>
-        <thead>
-          <tr>
-            <th>구분</th>
-            <th>출발</th>
-            <th>방향</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td rowspan="4"><b>오전</b></td>
-            <td>07:30</td>
-            <td>호텔 → BEXCO</td>
-          </tr>
-          <tr>
-            <td>08:00</td>
-            <td>호텔 → BEXCO</td>
-          </tr>
-          <tr>
-            <td>08:30</td>
-            <td>호텔 → BEXCO</td>
-          </tr>
-          <tr>
-            <td>09:00</td>
-            <td>호텔 → BEXCO</td>
-          </tr>
-          <tr>
-            <td rowspan="4"><b>저녁</b></td>
-            <td>18:00</td>
-            <td>BEXCO → 호텔</td>
-          </tr>
-          <tr>
-            <td>18:30</td>
-            <td>BEXCO → 호텔</td>
-          </tr>
-          <tr>
-            <td>19:00</td>
-            <td>BEXCO → 호텔</td>
-          </tr>
-          <tr>
-            <td>19:30</td>
-            <td>BEXCO → 호텔</td>
-          </tr>
-          <tr>
-            <td colspan="3" style="font-size:.85em;color:var(--soft);font-style:italic">시간표는 변경될 수 있습니다. 막차 출발 21:00.</td>
-          </tr>
-        </tbody>
-      </table>
+
+    <div class="sched-grid reveal">
+
+      <!-- A 노선: 파라다이스·시그니엘 → BEXCO -->
+      <div class="sched-col">
+        <h3 style="font-size:1rem;font-weight:700;margin:0 0 10px;color:var(--red)">
+          <span class="ko-only">파라다이스 · 시그니엘 → BEXCO</span><span class="en-only">Paradise · Signiel → BEXCO</span>
+        </h3>
+        <div class="sched-table">
+          <table>
+            <thead><tr>
+              <th>#</th>
+              <th><span class="ko-only">파라다이스</span><span class="en-only">Paradise</span></th>
+              <th><span class="ko-only">시그니엘</span><span class="en-only">Signiel</span></th>
+            </tr></thead>
+            <tbody>
+              <tr><td>1</td><td>07:30</td><td>07:40</td></tr>
+              <tr><td>2</td><td>07:40</td><td>07:50</td></tr>
+              <tr><td>3</td><td>07:50</td><td>08:00</td></tr>
+              <tr><td>4</td><td>08:00</td><td>08:10</td></tr>
+              <tr><td>5</td><td>09:00</td><td>09:10</td></tr>
+              <tr><td>6</td><td>10:00</td><td>10:10</td></tr>
+              <tr><td>7</td><td>11:00</td><td>11:10</td></tr>
+              <tr><td>8</td><td>12:00</td><td>12:10</td></tr>
+              <tr><td>9</td><td>13:00</td><td>13:10</td></tr>
+              <tr><td>10</td><td>14:00</td><td>14:10</td></tr>
+              <tr><td>11</td><td>15:00</td><td>15:10</td></tr>
+              <tr><td>12</td><td>16:00</td><td>16:10</td></tr>
+              <tr><td>13</td><td>17:00</td><td>17:10</td></tr>
+              <tr><td>14</td><td>18:00</td><td>18:10</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- B 노선: 웨스틴조선·파크하얏트 → BEXCO -->
+      <div class="sched-col">
+        <h3 style="font-size:1rem;font-weight:700;margin:0 0 10px;color:var(--navy)">
+          <span class="ko-only">웨스틴조선 · 파크하얏트 → BEXCO</span><span class="en-only">Westin Josun · Park Hyatt → BEXCO</span>
+        </h3>
+        <div class="sched-table">
+          <table>
+            <thead><tr>
+              <th>#</th>
+              <th><span class="ko-only">웨스틴조선</span><span class="en-only">Westin Josun</span></th>
+              <th><span class="ko-only">파크하얏트</span><span class="en-only">Park Hyatt</span></th>
+            </tr></thead>
+            <tbody>
+              <tr><td>1</td><td>07:30</td><td>07:40</td></tr>
+              <tr><td>2</td><td>07:45</td><td>07:55</td></tr>
+              <tr><td>3</td><td>08:00</td><td>08:10</td></tr>
+              <tr><td>4</td><td>09:00</td><td>09:10</td></tr>
+              <tr><td>5</td><td>10:00</td><td>10:10</td></tr>
+              <tr><td>6</td><td>11:00</td><td>11:10</td></tr>
+              <tr><td>7</td><td>12:00</td><td>12:10</td></tr>
+              <tr><td>8</td><td>13:00</td><td>13:10</td></tr>
+              <tr><td>9</td><td>14:00</td><td>14:10</td></tr>
+              <tr><td>10</td><td>15:00</td><td>15:10</td></tr>
+              <tr><td>11</td><td>16:00</td><td>16:10</td></tr>
+              <tr><td>12</td><td>17:00</td><td>17:10</td></tr>
+              <tr><td>13</td><td>18:00</td><td>18:10</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BEXCO → 호텔 (양 노선) -->
+      <div class="sched-col">
+        <h3 style="font-size:1rem;font-weight:700;margin:0 0 10px;color:#444">
+          BEXCO → <span class="ko-only">호텔 (양 노선 동시 출발)</span><span class="en-only">Hotel (Both routes)</span>
+        </h3>
+        <div class="sched-table">
+          <table>
+            <thead><tr>
+              <th>#</th>
+              <th>BEXCO</th>
+            </tr></thead>
+            <tbody>
+              <tr><td>1</td><td>08:30</td></tr>
+              <tr><td>2</td><td>09:30</td></tr>
+              <tr><td>3</td><td>10:30</td></tr>
+              <tr><td>4</td><td>11:30</td></tr>
+              <tr><td>5</td><td>12:30</td></tr>
+              <tr><td>6</td><td>13:30</td></tr>
+              <tr><td>7</td><td>14:30</td></tr>
+              <tr><td>8</td><td>15:30</td></tr>
+              <tr><td>9</td><td>16:30</td></tr>
+              <tr><td>10</td><td>17:30</td></tr>
+              <tr><td>11</td><td>18:30</td></tr>
+              <tr><td>12</td><td>19:30</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
-    <p class="sched-note reveal">
-      ⚠ 실시간 차량 추적은 제공되지 않습니다. 지정 정류장에서 대기해 주세요. 만석일 경우 다음 운행 편을 이용해 주세요.
+    <p class="sched-note reveal ko-block">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> 당일 상황에 따라 시간표가 조정될 수 있습니다. 현장 안내판을 확인해 주세요. 만석 시 다음 운행 편을 이용해 주세요.
+    </p>
+    <p class="sched-note reveal en-block">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Schedule may be subject to change on the day. Please check on-site boards. If a shuttle is full, please wait for the next service.
     </p>
   </div>
 </section>
@@ -161,9 +281,12 @@
 <section class="section" style="padding-top:0" aria-labelledby="stop-h">
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="kicker">정류장 · Stops</span>
-      <h2 class="sec-h" id="stop-h">순환 정류장</h2>
-      <p class="sec-sub">행사장 셔틀 순환 정류장 목록입니다. 호텔 또는 BEXCO에서 탑승하세요.</p>
+      <h2 class="sec-h" id="stop-h">
+        <span class="ko-only">셔틀 정류장</span>
+        <span class="en-only">Shuttle Stops</span>
+      </h2>
+      <p class="sec-sub ko-block">5개 공식호텔과 BEXCO가 정류장입니다. 호텔 또는 BEXCO에서 탑승하세요.</p>
+      <p class="sec-sub en-block">All 5 official hotels and BEXCO are shuttle stops. Board at your hotel or at BEXCO.</p>
     </div>
     <div class="dest-grid">
       <div class="dest-card reveal d1">
@@ -172,23 +295,51 @@
                alt="BEXCO"
                onerror="this.onerror=null;this.src='assets/img/bexco.jpg'">
         </div>
-        <div class="dest-body"><b>BEXCO</b><span>센텀시티 · 메인 학회장</span></div>
+        <div class="dest-body"><b>BEXCO</b><span class="ko-only">센텀시티 · 메인 학회장</span><span class="en-only">Centum City · Main venue</span></div>
       </div>
       <div class="dest-card reveal d2">
+        <div class="dest-thumb">
+          <img src="assets/img/hotel-parkhyatt.jpg" alt="Paradise Hotel Busan">
+        </div>
+        <div class="dest-body">
+          <b class="dest-name"><span class="nm-ko">파라다이스 호텔 부산</span><span class="nm-en">Paradise Hotel Busan</span></b>
+          <span class="ko-only">해운대 비치 · A 노선 첫 정거장</span>
+          <span class="en-only">Haeundae Beach · Route A first stop</span>
+        </div>
+      </div>
+      <div class="dest-card reveal d3">
         <div class="dest-thumb">
           <img src="https://transport.apec2025.kr/shared/images/stations/img-location-signiel.jpg"
                alt="Signiel Busan"
                onerror="this.onerror=null;this.src='assets/img/hotel-signiel.jpg'">
         </div>
-        <div class="dest-body"><b>시그니엘 부산</b><span>해운대 · APHRS 공식호텔</span></div>
+        <div class="dest-body">
+          <b class="dest-name"><span class="nm-ko">시그니엘 부산</span><span class="nm-en">Signiel Busan</span></b>
+          <span class="ko-only">엘시티 · A 노선 두 번째 정거장</span>
+          <span class="en-only">LCT · Route A second stop</span>
+        </div>
       </div>
-      <div class="dest-card reveal d3">
+      <div class="dest-card reveal d4">
+        <div class="dest-thumb">
+          <img src="assets/img/hotel-signiel.jpg" alt="Westin Josun Busan">
+        </div>
+        <div class="dest-body">
+          <b class="dest-name"><span class="nm-ko">웨스틴조선 부산</span><span class="nm-en">Westin Josun Busan</span></b>
+          <span class="ko-only">동백섬 · B 노선 첫 정거장</span>
+          <span class="en-only">Dongbaek Island · Route B first stop</span>
+        </div>
+      </div>
+      <div class="dest-card reveal d5">
         <div class="dest-thumb">
           <img src="https://transport.apec2025.kr/shared/images/stations/img-location-park-hyatt.jpg"
                alt="Park Hyatt Busan"
                onerror="this.onerror=null;this.src='assets/img/hotel-parkhyatt.jpg'">
         </div>
-        <div class="dest-body"><b>파크하얏트 부산</b><span>해운대 마린시티 · APHRS 공식호텔</span></div>
+        <div class="dest-body">
+          <b class="dest-name"><span class="nm-ko">파크하얏트 부산</span><span class="nm-en">Park Hyatt Busan</span></b>
+          <span class="ko-only">마린시티 · B 노선 두 번째 정거장</span>
+          <span class="en-only">Marine City · Route B second stop</span>
+        </div>
       </div>
     </div>
   </div>
@@ -197,15 +348,25 @@
 <!-- ===== RULES ===== -->
 <section class="section" style="padding-top:0" aria-labelledby="rl-h">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="kicker">안내 · Information</span><h2 class="sec-h" id="rl-h">이용 안내</h2></div>
+    <div class="sec-head reveal"><h2 class="sec-h" id="rl-h"><span class="ko-only">이용 안내</span><span class="en-only">Information</span></h2></div>
     <div class="rules reveal">
-      <h4>탑승 자격 · 이용 안내</h4>
-      <ul>
-        <li><b>APHRS 2026 등록 참가자</b>에게 무료로 제공됩니다. 등록 확인서 또는 배지를 지참해 주세요.</li>
-        <li><b>QR 탑승권</b>이 필요합니다. 탑승 전 휴대폰 또는 인쇄 형태로 준비해 주세요.</li>
-        <li>피크 시간대에는 만석일 수 있습니다. 만석 시 <b>다음 운행 편</b>(30분 이내 도착)을 이용해 주세요.</li>
-        <li>실시간 추적은 제공되지 않습니다. 셔틀은 지속적으로 순환 운행하므로 지정 정류장에서 대기해 주세요.</li>
-        <li>시간표는 변경될 수 있습니다. 막차 21:00. 현장 안내판을 확인해 주세요.</li>
+      <h4 class="ko-block">탑승 자격 · 이용 안내</h4>
+      <h4 class="en-block">Eligibility &amp; Guidelines</h4>
+      <ul class="ko-block">
+        <li><b>APHRS 2026 등록 참가자</b>에게 무료로 제공됩니다. 등록 배지를 지참해 주세요.</li>
+        <li>선착순 탑승입니다. 별도 예약은 필요하지 않습니다.</li>
+        <li>출발 <b>10분 전</b>까지 정류장에 도착해 주세요.</li>
+        <li>피크 시간대에는 만석일 수 있습니다. 만석 시 <b>다음 운행 편</b>을 이용해 주세요.</li>
+        <li>실시간 추적은 제공되지 않습니다. 지정 정류장에서 대기해 주세요.</li>
+        <li>시간표는 변경될 수 있습니다. 현장 안내판을 확인해 주세요.</li>
+      </ul>
+      <ul class="en-block">
+        <li>Free for <b>APHRS 2026 registered attendees</b>. Please wear your conference badge.</li>
+        <li>First-come, first-served. No reservation required.</li>
+        <li>Please arrive at the stop <b>10 minutes before departure</b>.</li>
+        <li>Shuttles may be full during peak hours. Please wait for the next service.</li>
+        <li>Real-time tracking is not available. Please wait at your designated stop.</li>
+        <li>Schedule is subject to change. Check on-site boards for updates.</li>
       </ul>
     </div>
   </div>
@@ -222,40 +383,42 @@
              alt="APHRS 2026"
              style="height:32px;object-fit:contain"
              onerror="this.onerror=null;this.src='assets/img/brand/color/abbr_horz_1.png'">
-        <span class="wm"><b>APHRS 2026 Transportation</b><small>GroundK · 참가자 교통 포털 데모</small></span>
+        <span class="wm"><b>APHRS 2026 Transportation</b><small><span class="ko-only">GroundK · 참가자 교통 포털 데모</span><span class="en-only">GroundK · Participant Transport Portal Demo</span></small></span>
       </a>
       <nav class="fnav" aria-label="푸터">
-        <a href="shuttle-airport-hotel.html">공항 → 호텔</a>
-        <a href="shuttle-hotel-airport.html">호텔 → 공항</a>
-        <a href="shuttle-venue.html">행사장 셔틀</a>
-        <a href="index.html#support">고객 지원</a>
+        <a href="shuttle-airport-hotel.html"><span class="ko-only">공항 → 호텔</span><span class="en-only">Airport → Hotel</span></a>
+        <a href="shuttle-hotel-airport.html"><span class="ko-only">호텔 → 공항</span><span class="en-only">Hotel → Airport</span></a>
+        <a href="shuttle-venue.html"><span class="ko-only">행사장 셔틀</span><span class="en-only">Venue Shuttle</span></a>
+        <a href="index.html#support"><span class="ko-only">고객 지원</span><span class="en-only">Support</span></a>
       </nav>
     </div>
     <div class="legal">
       <b>GroundK Co., Ltd</b> · 대표 장동원 · 사업자등록번호 238-81-00429<br>
       부산광역시 해운대구 센텀동로 45, 405호 (우 48059) · Tel +82-2-863-3540 · Fax +82-70-8275-3540 · ops@groundk.com<br>
-      RIDEUS는 GroundK의 Transportation × Travel 플랫폼입니다. 모든 거래·교환·환불·민원은 GroundK가 처리합니다.<br>
-      <span class="ver">© 2026 GroundK · APHRS 2026 참가자 교통 포털 (콘셉트 데모) · build 2026.06.28.17</span>
+      <span class="ko-only">RIDEUS는 GroundK의 Transportation × Travel 플랫폼입니다. 모든 거래·교환·환불·민원은 GroundK가 처리합니다.</span><span class="en-only">RIDEUS is GroundK's Transportation × Travel platform. All transactions, exchanges, refunds &amp; inquiries are handled by GroundK.</span><br>
+      <span class="ver">© 2026 GroundK · <span class="ko-only">APHRS 2026 참가자 교통 포털 (콘셉트 데모)</span><span class="en-only">APHRS 2026 Participant Transport Portal (Concept Demo)</span> · build 2026.06.30.4</span>
     </div>
   </div>
 </footer>
 
-<div class="mockup-flag">컨셉 목업 · 실제 예약 연동 예정</div>
+<div class="mockup-flag"><span class="ko-only">컨셉 목업<span class="mf-ext"> · 실제 예약 연동 예정</span></span><span class="en-only">Concept Mockup<span class="mf-ext"> · Booking integration planned</span></span></div>
 
 <!-- ===== BOOKING LOOKUP MODAL ===== -->
 <div class="modal-ov" id="lookupModal" role="dialog" aria-modal="true" aria-labelledby="lk-h">
   <div class="modal">
     <button class="modal-x" id="lookupClose" type="button" aria-label="닫기">✕</button>
-    <h3 id="lk-h">예약 내역 조회</h3>
-    <p>예약번호와 이메일을 입력하면 데모 예약 내역을 확인합니다.</p>
-    <div class="mf"><label for="lkCode">예약번호</label><input id="lkCode" type="text" placeholder="RE-APHRS-SH-0000"></div>
-    <div class="mf"><label for="lkEmail">이메일</label><input id="lkEmail" type="email" placeholder="you@example.com"></div>
-    <div class="m-actions"><button class="btn btn-red btn-block btn-sm" id="lookupSubmit" type="button">조회하기</button></div>
-    <p class="m-note" id="lkResult">※ 콘셉트 데모입니다. 실제 예약 시스템과 연동되지 않으며, 예시 안내만 표시됩니다.</p>
+    <h3 id="lk-h"><span class="ko-only">예약 내역 조회</span><span class="en-only">Booking Lookup</span></h3>
+    <p class="ko-block">예약번호와 이메일을 입력하면 데모 예약 내역을 확인합니다.</p>
+    <p class="en-block">Enter your booking number and email to view your demo booking details.</p>
+    <div class="mf"><label for="lkCode"><span class="ko-only">예약번호</span><span class="en-only">Booking No.</span></label><input id="lkCode" type="text" placeholder="RE-APHRS-SH-0000"></div>
+    <div class="mf"><label for="lkEmail"><span class="ko-only">이메일</span><span class="en-only">Email</span></label><input id="lkEmail" type="email" placeholder="you@example.com"></div>
+    <div class="m-actions"><button class="btn btn-red btn-block btn-sm" id="lookupSubmit" type="button"><span class="ko-only">조회하기</span><span class="en-only">Search</span></button></div>
+    <p class="m-note ko-block" id="lkResult">※ 콘셉트 데모입니다. 실제 예약 시스템과 연동되지 않으며, 예시 안내만 표시됩니다.</p>
+    <p class="m-note en-block">※ This is a concept demo. Not connected to an actual booking system. Sample information only.</p>
   </div>
 </div>
 
-<script src="assets/app.js?v=2026.06.28.17"></script>
+<script src="assets/app.js?v=2026.06.30.4"></script>
 
 <script>
 (function(){
