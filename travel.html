@@ -6,8 +6,8 @@
 <meta http-equiv="Cache-Control" content="no-cache">
 <title>여행 정보 — APHRS 2026 부산 교통 | RIDEUS Events</title>
 <meta name="description" content="APHRS 2026 부산 참가자 여행 정보 — 입국 안내, KTX 예매, 짐 배송, 유심/eSIM을 한 페이지에. 부산 도착에 필요한 모든 정보.">
-<meta name="version" content="2026.06.30.4">
-<link rel="stylesheet" href="assets/transport.css?v=2026.06.30.4">
+<meta name="version" content="2026.07.01.1">
+<link rel="stylesheet" href="assets/transport.css?v=2026.07.01.1">
 <style>
   /* ===== 현재 메뉴 표시 (여행 정보 active) ===== */
   .nav-dd-btn.active{color:var(--red)}
@@ -81,6 +81,43 @@
   .partner-spotlight{align-items:center;gap:28px}
   .partner-logo-lg{width:150px;height:150px;padding:14px}
   @media(max-width:560px){.partner-spotlight{align-items:flex-start;gap:18px}.partner-logo-lg{width:104px;height:104px;padding:10px}}
+
+  /* ===== KTX 여정 타임라인 (Journey) — 3카드 병렬 → 인천/서울 ~ BEXCO 단일 흐름 ===== */
+  .journey{list-style:none;margin:8px 0 0;padding:0}
+  .jstep{position:relative;padding:0 0 26px 60px;min-height:40px}
+  .jstep:last-child{padding-bottom:0}
+  /* 커넥터 라인: 마커 중심(30px) 관통, z-index로 마커가 위 */
+  .jstep::before{content:"";position:absolute;left:29px;top:6px;bottom:-6px;width:2px;background:var(--line)}
+  .jstep:last-child::before{display:none}
+  .jstep-marker{position:absolute;left:10px;top:0;width:40px;height:40px;border-radius:50%;display:flex;
+    align-items:center;justify-content:center;background:#fff;border:2px solid var(--line);color:var(--navy);z-index:1}
+  .jstep-marker .ico{width:20px;height:20px}
+  .jstep--book .jstep-marker{background:var(--red);border-color:var(--red);color:#fff}
+  .jstep--end .jstep-marker{background:var(--navy);border-color:var(--navy);color:#fff}
+  .jstep-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 20px}
+  .jstep--book .jstep-card{border-color:#f6cdd5;background:var(--red-050)}
+  .jstep-title{font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.3px;margin:0}
+  .jstep-sub{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.6}
+  .jstep-meta{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.6}
+  .jstep-meta strong{color:var(--ink);font-weight:700}
+  .jstep-forks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  .jfork{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px}
+  .jfork b{display:block;font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:4px}
+  .jfork span{font-size:12.5px;color:var(--muted);line-height:1.5}
+  .jfork strong{color:var(--ink);font-weight:700}
+  .jbook-ways{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:9px}
+  .jbook-ways li{position:relative;padding-left:18px;font-size:13px;color:var(--ink);line-height:1.55}
+  .jbook-ways li::before{content:"";position:absolute;left:2px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--red)}
+  .jbook-ways b{font-weight:700}
+  .jbook-ways a{color:var(--red);font-weight:700;text-decoration:underline}
+  .jstep-cta{margin-top:14px}
+  @media(max-width:560px){
+    .jstep{padding:0 0 24px 52px}
+    .jstep::before{left:25px}
+    .jstep-marker{left:6px}
+    .jstep-forks{grid-template-columns:1fr}
+    .jstep-card{padding:14px 16px}
+  }
 </style>
 </head>
 <body>
@@ -460,95 +497,78 @@
       <p class="sec-sub en-block">High-speed rail from Seoul Station or Incheon Airport to Busan Station in ~2.5 hours. The fastest and most comfortable choice.</p>
     </div>
 
-    <!-- 부산 도착 루트 -->
+    <!-- 여정 타임라인: 인천공항·서울역 → KTX 예매 → 부산역 → 셔틀 → BEXCO (단일 흐름) -->
     <div class="tv-group">
-      <h3 class="tv-subh"><span class="ko-only">부산 도착 루트</span><span class="en-only">Routes to Busan</span></h3>
-      <div class="arr-grid">
-        <div class="arr-card">
-          <img class="arr-card-thumb" src="assets/img/incheon-airport-ktx.jpg" alt="인천공항 KTX">
-          <div class="arr-card-body">
-            <h3 class="arr-card-title"><span class="ko-only">인천공항 → 부산역</span><span class="en-only">Incheon Airport → Busan Station</span></h3>
-            <p class="arr-card-meta ko-block">AREX + KTX 환승 &nbsp;·&nbsp; 약 2시간 50분</p>
-            <p class="arr-card-meta en-block">AREX + KTX transfer &nbsp;·&nbsp; ~2h 50min</p>
-            <ol class="arr-steps">
-              <li><span class="ko-only"><strong>AREX</strong>(공항철도 일반) 탑승 → 서울역 약 43분</span><span class="en-only">Board <strong>AREX</strong> (Airport Railroad Express) → Seoul Station ~43 min</span></li>
-              <li><span class="ko-only">서울역에서 <strong>KTX</strong>로 환승</span><span class="en-only">Transfer to <strong>KTX</strong> at Seoul Station</span></li>
-              <li><span class="ko-only"><strong>부산역</strong> 도착</span><span class="en-only">Arrive at <strong>Busan Station</strong></span></li>
-            </ol>
-          </div>
-        </div>
-        <div class="arr-card">
-          <img class="arr-card-thumb" src="assets/img/ktx_gallery1.webp" alt="KTX 차창 밖 풍경">
-          <div class="arr-card-body">
-            <h3 class="arr-card-title"><span class="ko-only">서울역 → 부산역</span><span class="en-only">Seoul Station → Busan Station</span></h3>
-            <p class="arr-card-meta ko-block">KTX 직행 &nbsp;·&nbsp; 약 2시간 20분</p>
-            <p class="arr-card-meta en-block">KTX Direct &nbsp;·&nbsp; ~2h 20min</p>
-            <ol class="arr-steps">
-              <li><span class="ko-only"><strong>서울역</strong>에서 출발</span><span class="en-only">Depart from <strong>Seoul Station</strong></span></li>
-              <li><span class="ko-only">환승 없는 KTX 직행 운행</span><span class="en-only">Non-stop KTX direct service</span></li>
-              <li><span class="ko-only"><strong>부산역</strong> 도착</span><span class="en-only">Arrive at <strong>Busan Station</strong></span></li>
-            </ol>
-          </div>
-        </div>
-        <div class="arr-card">
-          <img class="arr-card-thumb" src="assets/img/busan-station.jpg" alt="부산역">
-          <div class="arr-card-body">
-            <h3 class="arr-card-title"><span class="ko-only">부산역 → BEXCO</span><span class="en-only">Busan Station → BEXCO</span></h3>
-            <p class="arr-card-meta ko-block">APHRS 셔틀 연계 &nbsp;·&nbsp; 약 40분</p>
-            <p class="arr-card-meta en-block">APHRS Shuttle Connection &nbsp;·&nbsp; ~40 min</p>
-            <ol class="arr-steps">
-              <li><span class="ko-only">KTX로 <strong>부산역</strong> 도착</span><span class="en-only">Arrive at <strong>Busan Station</strong> by KTX</span></li>
-              <li><span class="ko-only"><strong>APHRS 셔틀 승강장</strong>으로 이동</span><span class="en-only">Proceed to <strong>APHRS Shuttle Bay</strong></span></li>
-              <li><span class="ko-only"><strong>BEXCO / 공식 호텔</strong>까지 셔틀 탑승</span><span class="en-only">Board shuttle to <strong>BEXCO / Official Hotels</strong></span></li>
-            </ol>
-          </div>
-        </div>
-      </div>
-    </div>
+      <h3 class="tv-subh"><span class="ko-only">인천공항·서울역에서 BEXCO까지 — 전체 여정</span><span class="en-only">Incheon Airport · Seoul Station to BEXCO — the full journey</span></h3>
+      <ol class="journey">
 
-    <!-- KTX 예매 방법 -->
-    <div class="tv-group">
-      <h3 class="tv-subh"><span class="ko-only">KTX 예매 방법</span><span class="en-only">How to Book KTX</span></h3>
-      <div class="how-grid">
-        <div class="how-step">
-          <span class="how-num">01</span>
-          <h4><span class="ko-only">KORAIL 공식 홈페이지</span><span class="en-only">KORAIL Official Website</span></h4>
-          <p class="ko-block"><a href="https://www.letskorail.com" target="_blank" rel="noopener">letskorail.com</a>에서 열차 시간표 검색 후 좌석 예약. 1개월 전부터 예매 가능합니다.</p>
-          <p class="en-block">Search train schedules and reserve seats at <a href="https://www.letskorail.com" target="_blank" rel="noopener">letskorail.com</a>. Tickets available from 1 month in advance.</p>
-        </div>
-        <div class="how-step">
-          <span class="how-num">02</span>
-          <h4><span class="ko-only">코레일 Talk 앱</span><span class="en-only">Korail App</span></h4>
-          <p class="ko-block"><strong>코레일 Talk</strong> 앱(iOS / Android)으로 모바일 예매, QR 승차권 발급, 실시간 좌석 확인이 가능합니다.</p>
-          <p class="en-block">Use the <strong>Korail Talk</strong> app (iOS / Android) for mobile ticketing, QR ticket issuance, and real-time seat availability.</p>
-        </div>
-        <div class="how-step">
-          <span class="how-num">03</span>
-          <h4><span class="ko-only">역 창구 발권</span><span class="en-only">Station Ticket Window</span></h4>
-          <p class="ko-block">주요 KTX 역 창구에서 현장 구매 가능. 신용카드·현금 모두 사용 가능하며 서울역에는 영어 지원 직원이 배치됩니다.</p>
-          <p class="en-block">Purchase tickets in person at major KTX station counters. Credit cards and cash accepted. English-speaking staff available at Seoul Station.</p>
-        </div>
-      </div>
-    </div>
+        <!-- 1. 출발 -->
+        <li class="jstep">
+          <span class="jstep-marker"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 4.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></span>
+          <div class="jstep-card">
+            <h4 class="jstep-title"><span class="ko-only">출발지</span><span class="en-only">Your departure point</span></h4>
+            <p class="jstep-sub"><span class="ko-only">한국 어디서 출발하든, KTX는 서울역에서 탑니다.</span><span class="en-only">Wherever you begin in Korea, you board the KTX at Seoul Station.</span></p>
+            <div class="jstep-forks">
+              <div class="jfork">
+                <b><span class="ko-only">인천공항에서</span><span class="en-only">From Incheon Airport</span></b>
+                <span class="ko-only">AREX 공항철도로 <strong>서울역까지 약 43분</strong></span><span class="en-only">AREX Airport Railroad → <strong>Seoul Station ~43 min</strong></span>
+              </div>
+              <div class="jfork">
+                <b><span class="ko-only">서울역에서</span><span class="en-only">From Seoul Station</span></b>
+                <span class="ko-only">환승 없이 <strong>바로 KTX 탑승</strong></span><span class="en-only">Board the <strong>KTX directly</strong></span>
+              </div>
+            </div>
+          </div>
+        </li>
 
-    <!-- KTX 예매 CTA -->
-    <div class="tv-cta">
-      <a href="https://www.letskorail.com" target="_blank" rel="noopener" class="btn btn-red">
-        <span class="ko-only">KORAIL에서 예매하기 ↗</span><span class="en-only">Book on KORAIL ↗</span>
-      </a>
-    </div>
+        <!-- 2. KTX 예매 (흐름 중간 강조 노드) -->
+        <li class="jstep jstep--book">
+          <span class="jstep-marker"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 11v2"/><path d="M13 17v2"/></svg></span>
+          <div class="jstep-card">
+            <h4 class="jstep-title"><span class="ko-only">KTX 예매</span><span class="en-only">Book your KTX</span></h4>
+            <p class="jstep-sub"><span class="ko-only">탑승 전 미리 예매하세요 — 출발 1개월 전부터 가능합니다.</span><span class="en-only">Reserve before you ride — tickets open up to 1 month ahead.</span></p>
+            <ul class="jbook-ways">
+              <li><b><span class="ko-only">KORAIL 공식 홈페이지</span><span class="en-only">KORAIL website</span></b> — <span class="ko-only"><a href="https://www.letskorail.com" target="_blank" rel="noopener">letskorail.com</a>에서 시간표 검색·좌석 예약</span><span class="en-only">search schedules &amp; reserve seats at <a href="https://www.letskorail.com" target="_blank" rel="noopener">letskorail.com</a></span></li>
+              <li><b><span class="ko-only">코레일 Talk 앱</span><span class="en-only">Korail Talk app</span></b> — <span class="ko-only">모바일 예매·QR 승차권·실시간 좌석 확인</span><span class="en-only">mobile booking, QR tickets, live seat availability</span></li>
+              <li><b><span class="ko-only">역 창구 발권</span><span class="en-only">Station ticket window</span></b> — <span class="ko-only">현장 구매, 서울역 영어 지원 직원 배치</span><span class="en-only">buy in person; English-speaking staff at Seoul Station</span></li>
+            </ul>
+            <div class="jstep-cta">
+              <a href="https://www.letskorail.com" target="_blank" rel="noopener" class="btn btn-red btn-sm"><span class="ko-only">KORAIL에서 예매하기 ↗</span><span class="en-only">Book on KORAIL ↗</span></a>
+            </div>
+          </div>
+        </li>
 
-    <!-- 부산역 → 셔틀 연결 안내 -->
-    <div class="tv-group">
-      <div class="info-box info-box--blue">
-        <span class="info-box-icon"><svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span>
-        <div>
-          <strong><span class="ko-only">부산역 → APHRS 셔틀 연결 안내</span><span class="en-only">Busan Station → APHRS Shuttle Connection</span></strong>
-          <p class="ko-block">KTX로 부산역 도착 후 APHRS 셔틀버스를 이용하면 BEXCO 컨벤션 센터 및 공식 컨퍼런스 호텔까지 이동할 수 있습니다. 소요 시간은 약 <strong>40분</strong>입니다. 정문 출구의 APHRS 전용 승강장으로 이동해 주세요.</p>
-          <p class="en-block">After arriving at Busan Station by KTX, take the APHRS shuttle bus to BEXCO Convention Center and official conference hotels. Journey time is approximately <strong>40 minutes</strong>. Please proceed to the APHRS dedicated shuttle bay at the main exit.</p>
-          <a href="booking.html?svc=airport" class="btn btn-navy btn-sm" style="margin-top:.75rem;"><span class="ko-only">셔틀 예약 →</span><span class="en-only">Book Shuttle →</span></a>
-        </div>
-      </div>
+        <!-- 3. KTX 탑승 → 부산역 -->
+        <li class="jstep">
+          <span class="jstep-marker"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect width="16" height="16" x="4" y="3" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m18 22-2-3"/><path d="M8 15h.01"/><path d="M16 15h.01"/></svg></span>
+          <div class="jstep-card">
+            <h4 class="jstep-title"><span class="ko-only">KTX 탑승 → 부산역</span><span class="en-only">Ride the KTX → Busan Station</span></h4>
+            <p class="jstep-meta"><span class="ko-only">서울역 → 부산역 <strong>직행 약 2시간 20분</strong>. 인천공항 출발 기준 총 약 2시간 50분(AREX 포함).</span><span class="en-only">Seoul → Busan <strong>direct ~2h 20min</strong>. About 2h 50min total from Incheon Airport (incl. AREX).</span></p>
+          </div>
+        </li>
+
+        <!-- 4. APHRS 셔틀 -->
+        <li class="jstep">
+          <span class="jstep-marker"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6v6"/><path d="M15 6v6"/><path d="M2 12h19.6"/><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3"/><circle cx="7" cy="18" r="2"/><path d="M9 18h5"/><circle cx="16" cy="18" r="2"/></svg></span>
+          <div class="jstep-card">
+            <h4 class="jstep-title"><span class="ko-only">APHRS 셔틀 탑승</span><span class="en-only">Transfer to the APHRS shuttle</span></h4>
+            <p class="jstep-meta"><span class="ko-only">부산역 정문의 <strong>APHRS 전용 승강장</strong>에서 탑승 → BEXCO·공식 호텔까지 <strong>약 40분</strong>.</span><span class="en-only">Board at the <strong>APHRS dedicated bay</strong> by the Busan Station main exit → <strong>~40 min</strong> to BEXCO &amp; official hotels.</span></p>
+          </div>
+        </li>
+
+        <!-- 5. 도착 (종착 노드) -->
+        <li class="jstep jstep--end">
+          <span class="jstep-marker"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 4.4-8 12-8 12s-8-7.6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <div class="jstep-card">
+            <h4 class="jstep-title"><span class="ko-only">도착 — BEXCO / 공식 호텔</span><span class="en-only">Arrive — BEXCO / Official Hotels</span></h4>
+            <p class="jstep-sub"><span class="ko-only">부산역에서 행사장·숙소까지 셔틀로 논스톱. 미리 예약해 두면 도착 즉시 탑승할 수 있습니다.</span><span class="en-only">Non-stop shuttle from Busan Station to the venue &amp; your hotel. Book ahead to board the moment you arrive.</span></p>
+            <div class="jstep-cta">
+              <a href="booking.html?svc=airport" class="btn btn-navy btn-sm"><span class="ko-only">셔틀 예약 →</span><span class="en-only">Book Shuttle →</span></a>
+            </div>
+          </div>
+        </li>
+
+      </ol>
     </div>
   </div>
 </section>
@@ -777,7 +797,7 @@
       <b>GroundK Co., Ltd</b> · 대표 장동원 · 사업자등록번호 238-81-00429<br>
       부산광역시 해운대구 센텀동로 45, 405호 (우 48059) · Tel +82-2-863-3540 · Fax +82-70-8275-3540 · ops@groundk.com<br>
       <span class="ko-only">RIDEUS는 GroundK의 Transportation × Travel 플랫폼입니다. 모든 거래·교환·환불·민원은 GroundK가 처리합니다.</span><span class="en-only">RIDEUS is GroundK's Transportation × Travel platform. All transactions, exchanges, refunds &amp; inquiries are handled by GroundK.</span><br>
-      <span class="ver">© 2026 GroundK · <span class="ko-only">APHRS 2026 참가자 교통 포털 (콘셉트 데모)</span><span class="en-only">APHRS 2026 Participant Transport Portal (Concept Demo)</span> · build 2026.06.30.4</span>
+      <span class="ver">© 2026 GroundK · <span class="ko-only">APHRS 2026 참가자 교통 포털 (콘셉트 데모)</span><span class="en-only">APHRS 2026 Participant Transport Portal (Concept Demo)</span> · build 2026.07.01.1</span>
     </div>
   </div>
 </footer>
@@ -799,7 +819,7 @@
   </div>
 </div>
 
-<script src="assets/app.js?v=2026.06.30.4"></script>
+<script src="assets/app.js?v=2026.07.01.1"></script>
 
 <script>
 /* ===== 모바일 nav 토글 ===== */
