@@ -6,8 +6,8 @@
 <meta http-equiv="Cache-Control" content="no-cache">
 <title>여행 정보 — APHRS 2026 부산 교통 | RIDEUS Events</title>
 <meta name="description" content="APHRS 2026 부산 참가자 여행 정보 — 입국 안내, KTX 예매, 짐 배송, 유심/eSIM을 한 페이지에. 부산 도착에 필요한 모든 정보.">
-<meta name="version" content="2026.07.01.1">
-<link rel="stylesheet" href="assets/transport.css?v=2026.07.01.1">
+<meta name="version" content="2026.07.01.2">
+<link rel="stylesheet" href="assets/transport.css?v=2026.07.01.2">
 <style>
   /* ===== 현재 메뉴 표시 (여행 정보 active) ===== */
   .nav-dd-btn.active{color:var(--red)}
@@ -117,6 +117,21 @@
     .jstep-marker{left:6px}
     .jstep-forks{grid-template-columns:1fr}
     .jstep-card{padding:14px 16px}
+  }
+
+  /* ===== 반응형 표 — 모바일 카드형 (각 행=카드, 헤더 라벨은 app.js가 data-th-ko/en 자동 주입) ===== */
+  @media(max-width:640px){
+    .acc-body table{border:0;font-size:13px}
+    /* thead는 시각적으로만 숨김(스크린리더는 유지) */
+    .acc-body thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+    .acc-body tbody tr{display:block;border:1px solid var(--line);border-radius:var(--radius-sm);margin-bottom:10px;background:#fff;overflow:hidden}
+    .acc-body tbody tr:last-child{margin-bottom:0}
+    .acc-body td{display:flex;flex-wrap:wrap;gap:2px 12px;align-items:baseline;border:0;border-bottom:1px solid var(--line-2);padding:9px 14px}
+    .acc-body tbody tr td:last-child{border-bottom:0}
+    /* 각 셀 앞 헤더 라벨 (기본 KO, EN 토글 시 분기) */
+    .acc-body td::before{content:attr(data-th-ko);flex:0 0 auto;min-width:82px;font-size:11px;font-weight:700;color:var(--navy);letter-spacing:.2px;line-height:1.6}
+    html[data-ui-lang="en"] .acc-body td::before{content:attr(data-th-en)}
+    .acc-body td:empty{display:none}
   }
 </style>
 </head>
@@ -347,8 +362,8 @@
               <tr><th><span class="ko-only">구분</span><span class="en-only">Class</span></th><th><span class="ko-only">소요시간</span><span class="en-only">Travel Time</span></th><th><span class="ko-only">요금(편도)</span><span class="en-only">Fare (one way)</span></th><th><span class="ko-only">예약</span><span class="en-only">Booking</span></th></tr>
             </thead>
             <tbody>
-              <tr><td><span class="ko-only">특실 (First Class)</span><span class="en-only">First Class</span></td><td rowspan="2"><span class="ko-only">약 2시간 30분</span><span class="en-only">~2 hr 30 min</span></td><td class="highlight">KRW 83,700</td><td rowspan="2"><a href="https://www.korail.com" target="_blank" rel="noopener">korail.com</a></td></tr>
-              <tr><td><span class="ko-only">일반실 (Standard)</span><span class="en-only">Standard Class</span></td><td class="highlight">KRW 59,800</td></tr>
+              <tr><td><span class="ko-only">특실 (First Class)</span><span class="en-only">First Class</span></td><td><span class="ko-only">약 2시간 30분</span><span class="en-only">~2 hr 30 min</span></td><td class="highlight">KRW 83,700</td><td><a href="https://www.korail.com" target="_blank" rel="noopener">korail.com</a></td></tr>
+              <tr><td><span class="ko-only">일반실 (Standard)</span><span class="en-only">Standard Class</span></td><td><span class="ko-only">약 2시간 30분</span><span class="en-only">~2 hr 30 min</span></td><td class="highlight">KRW 59,800</td><td><a href="https://www.korail.com" target="_blank" rel="noopener">korail.com</a></td></tr>
             </tbody>
           </table>
           <div class="notice"><span class="ko-only"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>KTX 좌석은 사전 예약이 권장됩니다. 학술대회 기간에는 수요가 높을 수 있습니다. <a href="https://www.korail.com" target="_blank" rel="noopener">korail.com</a>에서 최소 2~4주 전 예약하세요. 자세한 내용은 위 <b>KTX 예매</b> 탭을 참고하세요.</span><span class="en-only"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>Advance booking is recommended for KTX seats. Demand may be high during the conference period. Book at least 2–4 weeks in advance at <a href="https://www.korail.com" target="_blank" rel="noopener">korail.com</a>. See the <b>KTX</b> tab above for full details.</span></div>
@@ -797,7 +812,7 @@
       <b>GroundK Co., Ltd</b> · 대표 장동원 · 사업자등록번호 238-81-00429<br>
       부산광역시 해운대구 센텀동로 45, 405호 (우 48059) · Tel +82-2-863-3540 · Fax +82-70-8275-3540 · ops@groundk.com<br>
       <span class="ko-only">RIDEUS는 GroundK의 Transportation × Travel 플랫폼입니다. 모든 거래·교환·환불·민원은 GroundK가 처리합니다.</span><span class="en-only">RIDEUS is GroundK's Transportation × Travel platform. All transactions, exchanges, refunds &amp; inquiries are handled by GroundK.</span><br>
-      <span class="ver">© 2026 GroundK · <span class="ko-only">APHRS 2026 참가자 교통 포털 (콘셉트 데모)</span><span class="en-only">APHRS 2026 Participant Transport Portal (Concept Demo)</span> · build 2026.07.01.1</span>
+      <span class="ver">© 2026 GroundK · <span class="ko-only">APHRS 2026 참가자 교통 포털 (콘셉트 데모)</span><span class="en-only">APHRS 2026 Participant Transport Portal (Concept Demo)</span> · build 2026.07.01.2</span>
     </div>
   </div>
 </footer>
@@ -819,7 +834,7 @@
   </div>
 </div>
 
-<script src="assets/app.js?v=2026.07.01.1"></script>
+<script src="assets/app.js?v=2026.07.01.2"></script>
 
 <script>
 /* ===== 모바일 nav 토글 ===== */

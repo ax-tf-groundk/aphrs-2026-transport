@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  var SITE_VERSION = '2026.07.01.1';
+  var SITE_VERSION = '2026.07.01.2';
   try { console.log('%cRIDEUS Events · APHRS 2026 · build ' + SITE_VERSION, 'color:#e8344e;font-weight:700'); } catch (e) {}
 
   var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -83,11 +83,41 @@
     });
   }
 
+  /* ---- responsive tables — inject per-cell header labels so narrow screens can render each row as a card (see .acc-body card CSS) ---- */
+  function initResponsiveTables() {
+    var tables = document.querySelectorAll('.acc-body table');
+    Array.prototype.forEach.call(tables, function (table) {
+      var headRow = table.querySelector('thead tr');
+      if (!headRow) return;
+      var labels = Array.prototype.map.call(headRow.querySelectorAll('th'), function (th) {
+        var ko = th.querySelector('.ko-only');
+        var en = th.querySelector('.en-only');
+        return {
+          ko: (ko ? ko.textContent : th.textContent).trim(),
+          en: (en ? en.textContent : th.textContent).trim()
+        };
+      });
+      Array.prototype.forEach.call(table.querySelectorAll('tbody tr'), function (tr) {
+        var col = 0;
+        Array.prototype.forEach.call(tr.children, function (cell) {
+          if (cell.tagName !== 'TD') return;
+          var lab = labels[col];
+          if (lab) {
+            cell.setAttribute('data-th-ko', lab.ko);
+            cell.setAttribute('data-th-en', lab.en);
+          }
+          col += parseInt(cell.getAttribute('colspan') || '1', 10);
+        });
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initReveal();
     initLang();
     initLookup();
     initDemoBanner();
+    initResponsiveTables();
   });
 
   /* ---- demo banner close ---- */
