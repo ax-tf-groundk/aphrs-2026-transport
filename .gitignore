@@ -1,3 +1,6 @@
 
 # local working backup (not for repo)
 _logo_backup_html/
+
+# internal QA / bug-report screenshots (not for public deploy)
+screenshots/

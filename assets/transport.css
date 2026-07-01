@@ -270,10 +270,13 @@ h1,h2,h3,h4{line-height:1.16;letter-spacing:-.4px;text-wrap:balance}
 /* ---------- CORPORATE FOOTER ---------- */
 .corp-foot{background:var(--navy);color:#aeb8cc;font-size:13px;padding:40px 0 46px}
 .corp-foot .top{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-start;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.12)}
+.corp-foot .brand{flex-shrink:1;min-width:0}          /* 헤더 .brand의 flex-shrink:0 오버라이드 — 좁은 화면에서 푸터 브랜드 축소 허용 */
+.corp-foot .brand .wm{min-width:0}                     /* flex 자식이 콘텐츠 최소폭 아래로 줄어들어 워드마크 줄바꿈 */
 .corp-foot .brand .logo{box-shadow:none}
 .corp-foot .brand img{filter:brightness(0) invert(1)} /* dark footer: official color logo -> clean white */
-.corp-foot .brand .wm b{color:#fff;white-space:normal;word-break:keep-all}
+.corp-foot .brand .wm b{color:#fff;white-space:normal;word-break:keep-all;overflow-wrap:anywhere} /* iOS Safari 포함 강제 줄바꿈 */
 .corp-foot .brand .wm small{color:#8e9bb5}
+@media(max-width:560px){.corp-foot .top{flex-direction:column;gap:16px}} /* 모바일: 브랜드/내비 세로 스택 → 브랜드가 전체폭 확보 */
 .corp-foot .fnav{display:flex;gap:18px;flex-wrap:wrap}
 .corp-foot .fnav a{color:#aeb8cc}
 .corp-foot .fnav a:hover{color:#fff}
