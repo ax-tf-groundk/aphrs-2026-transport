@@ -820,6 +820,9 @@ h1,h2,h3,h4{line-height:1.16;letter-spacing:-.4px;text-wrap:balance}
 .en-only { display:none; }
 html[data-ui-lang="en"] .ko-only { display:none !important; }
 html[data-ui-lang="en"] .en-only { display:inline !important; }
+html[data-ui-lang="en"] p.en-only { display:block !important; } /* 문단형 en-only는 block 유지 — inline화되면 margin-top이 사라져 이름·설명 간격이 붙는다 */
+html[data-ui-lang="en"] div.en-only { display:block !important; } /* div도 동일 — 일반 흐름에서 inline화되면 블록 레이아웃이 무너진다 */
+html[data-ui-lang="en"] .rt-path.en-only { display:flex !important; } /* 노선 경로는 KO와 동일한 flex(gap 10px) 유지 */
 .en-block { display:none; }
 html[data-ui-lang="en"] .en-block { display:block !important; }
 html[data-ui-lang="en"] .ko-block { display:none !important; }
