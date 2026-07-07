@@ -575,6 +575,15 @@
 
   var group = L.featureGroup(markers);
   map.fitBounds(group.getBounds(), { padding: [30, 30] });
+
+  function syncLang() {
+    var isEnNow = document.documentElement.getAttribute('data-ui-lang') === 'en';
+    markers.forEach(function (m) {
+      var h = m.hotelData;
+      m.setIcon(createIcon(h.tier, isEnNow ? h.en : h.ko));
+    });
+  }
+  new MutationObserver(syncLang).observe(document.documentElement, { attributes: true, attributeFilter: ['data-ui-lang'] });
 })();
 </script>
 </body>
