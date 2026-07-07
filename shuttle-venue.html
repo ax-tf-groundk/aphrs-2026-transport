@@ -8,6 +8,9 @@
 <meta name="description" content="APHRS 2026 등록 참가자 무료 행사장 셔틀. 공식호텔↔BEXCO, 2026.10.21~24 운행. 노선·시간표·정류장 안내.">
 <meta name="version" content="2026.07.07.4">
 <link rel="stylesheet" href="assets/transport.css?v=2026.07.07.4">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+ integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+ crossorigin=""/>
 <style>
   /* Venue schedule — 3개 노선 표를 데스크탑에서 3열로 배치 */
   .sched-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start;margin-bottom:14px;border-top:1px solid var(--line);padding-top:26px}
@@ -28,6 +31,25 @@
   .dest-body .en-only{display:none}
   html[data-ui-lang="en"] .dest-body .ko-only{display:none!important}
   html[data-ui-lang="en"] .dest-body .en-only{display:block!important}
+  /* 호텔 지도 */
+  .hotel-map{height:460px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);margin-top:20px}
+  @media(max-width:760px){.hotel-map{height:360px}}
+  .hotel-list-grid{display:grid;grid-template-columns:1fr 2fr;gap:30px;margin-top:24px}
+  @media(max-width:760px){.hotel-list-grid{grid-template-columns:1fr;gap:20px}}
+  .hlist-h{font-size:14px;font-weight:800;color:var(--ink);margin:0 0 10px}
+  .hlist-h--vip{color:var(--red)}
+  .hlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+  .hlist li{font-size:13.5px;color:var(--ink);padding-left:14px;position:relative}
+  .hlist li::before{content:"·";position:absolute;left:0;color:var(--muted);font-weight:800}
+  /* 지도 마커 (Leaflet divIcon) */
+  .hmap-pin{display:flex;flex-direction:column;align-items:center;pointer-events:none}
+  .hmap-pin .hmap-dot{display:block;border-radius:50%;background:var(--navy);border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.35)}
+  .hmap-pin--vip .hmap-dot{width:22px;height:22px;background:var(--red);border-width:3px;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+  .hmap-pin--gen .hmap-dot{width:9px;height:9px}
+  .hmap-pin--bexco .hmap-dot--diamond{width:16px;height:16px;border-radius:3px;transform:rotate(45deg);background:var(--navy);border-width:3px}
+  .hmap-pin .hmap-label{margin-top:3px;font-size:9px;font-weight:600;color:var(--muted);white-space:nowrap;text-shadow:0 1px 2px #fff,0 -1px 2px #fff,1px 0 2px #fff,-1px 0 2px #fff}
+  .hmap-pin--vip .hmap-label{font-size:11.5px;font-weight:800;color:var(--ink)}
+  .hmap-pin--bexco .hmap-label{font-size:11.5px;font-weight:800;color:var(--navy)}
 </style>
 </head>
 <body>
@@ -344,6 +366,21 @@
   </div>
 </section>
 
+<!-- ===== HOTEL MAP ===== -->
+<section class="section" style="padding-top:0" aria-labelledby="hm-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="sec-h" id="hm-h">
+        <span class="ko-only">공식 호텔 안내</span>
+        <span class="en-only">Official Hotels</span>
+      </h2>
+      <p class="sec-sub ko-block">주요인사 5곳, 일반참가자 11곳 — BEXCO 기준 위치입니다.</p>
+      <p class="sec-sub en-block">5 VIP hotels, 11 general-participant hotels — relative to BEXCO.</p>
+    </div>
+    <div id="hotelMap" class="hotel-map reveal" role="img" aria-label="공식 호텔 위치 지도"></div>
+  </div>
+</section>
+
 <!-- ===== RULES ===== -->
 <section class="section" style="padding-top:0" aria-labelledby="rl-h">
   <div class="wrap">
@@ -442,6 +479,102 @@
       document.body.style.overflow = '';
     }
   });
+})();
+</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+ integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+ crossorigin=""></script>
+<script>
+(function(){
+  var HOTELS = [
+    {tier:'bexco', ko:'벡스코', en:'BEXCO', lat:35.169071, lng:129.136306},
+    {tier:'vip', ko:'파크하얏트 부산', en:'Park Hyatt Busan', lat:35.156558, lng:129.141864},
+    {tier:'vip', ko:'웨스틴조선 부산', en:'Westin Josun Busan', lat:35.155982, lng:129.154120},
+    {tier:'vip', ko:'그랜드조선 해운대', en:'Grand Josun Haeundae', lat:35.160108, lng:129.163170},
+    {tier:'vip', ko:'파라다이스 호텔 부산', en:'Paradise Hotel Busan', lat:35.160169, lng:129.164947},
+    {tier:'vip', ko:'시그니엘 부산', en:'Signiel Busan', lat:35.159801, lng:129.169609},
+    {tier:'gen', ko:'L7 해운대 바이 롯데', en:'L7 Haeundae by LOTTE', lat:35.160158, lng:129.159975},
+    {tier:'gen', ko:'트래블로지 스위트 부산 센텀', en:'Travelodge Suites Busan Centum', lat:35.165965, lng:129.132984},
+    {tier:'gen', ko:'라마다 앙코르 바이 윈덤 부산 해운대', en:'Ramada Encore by Wyndham Busan Haeundae', lat:35.163472, lng:129.159444},
+    {tier:'gen', ko:'펠릭스 바이 STX', en:'Felix by STX Hotel & Suite', lat:35.162976, lng:129.158442},
+    {tier:'gen', ko:'라비드 아틀란 호텔', en:'Lavi De Atlan Hotel', lat:35.161128, lng:129.161490},
+    {tier:'gen', ko:'해운대 센트럴호텔', en:'Haeundae Central Hotel', lat:35.160822, lng:129.166931},
+    {tier:'gen', ko:'플레아드블랑 호텔 앤 레지던스', en:'Plea De Blanc Hotel & Residence', lat:35.160957, lng:129.166552},
+    {tier:'gen', ko:'부산 영무파라드 호텔 해운대비치', en:'Busan Yeongmu Parade Hotel Haeundae Beach', lat:35.160934, lng:129.166519},
+    {tier:'gen', ko:'블루스토리 호텔', en:'Blue Story Hotel', lat:35.159959, lng:129.157689},
+    {tier:'gen', ko:'코오롱 씨클라우드 호텔', en:'Kolon Seacloud Hotel', lat:35.160527, lng:129.162373},
+    {tier:'gen', ko:'해운대 마리안느 호텔', en:'Haeundae Marianne Hotel', lat:35.161460, lng:129.164568}
+  ];
+
+  function mPerDegLng(lat) { return 111320 * Math.cos(lat * Math.PI / 180); }
+  function distMeters(a, b) {
+    var dLat = (a.lat - b.lat) * 111320;
+    var dLng = (a.lng - b.lng) * mPerDegLng((a.lat + b.lat) / 2);
+    return Math.sqrt(dLat * dLat + dLng * dLng);
+  }
+  function applyDeoverlap(list, thresholdMeters, spreadMeters) {
+    var used = new Array(list.length).fill(false);
+    for (var i = 0; i < list.length; i++) {
+      if (used[i]) continue;
+      var cluster = [i];
+      used[i] = true;
+      for (var j = i + 1; j < list.length; j++) {
+        if (!used[j] && distMeters(list[i], list[j]) < thresholdMeters) {
+          cluster.push(j);
+          used[j] = true;
+        }
+      }
+      if (cluster.length > 1) {
+        var latSum = 0, lngSum = 0;
+        cluster.forEach(function (idx) { latSum += list[idx].lat; lngSum += list[idx].lng; });
+        var centerLat = latSum / cluster.length;
+        var centerLng = lngSum / cluster.length;
+        var mLat = spreadMeters / 111320;
+        var mLng = spreadMeters / mPerDegLng(centerLat);
+        cluster.forEach(function (idx, k) {
+          var angle = (2 * Math.PI * k) / cluster.length;
+          list[idx].renderLat = centerLat + mLat * Math.sin(angle);
+          list[idx].renderLng = centerLng + mLng * Math.cos(angle);
+        });
+      } else {
+        list[cluster[0]].renderLat = list[cluster[0]].lat;
+        list[cluster[0]].renderLng = list[cluster[0]].lng;
+      }
+    }
+  }
+
+  function createIcon(tier, label) {
+    var cls = 'hmap-pin ' + (tier === 'vip' ? 'hmap-pin--vip' : tier === 'bexco' ? 'hmap-pin--bexco' : 'hmap-pin--gen');
+    var shape = tier === 'bexco' ? '<span class="hmap-dot hmap-dot--diamond"></span>' : '<span class="hmap-dot"></span>';
+    return L.divIcon({
+      className: cls,
+      html: shape + '<span class="hmap-label">' + label + '</span>',
+      iconSize: null,
+      iconAnchor: tier === 'vip' ? [11, 11] : tier === 'bexco' ? [10, 10] : [4.5, 4.5]
+    });
+  }
+
+  var el = document.getElementById('hotelMap');
+  if (!el || typeof L === 'undefined') return;
+
+  applyDeoverlap(HOTELS, 25, 18);
+
+  var map = L.map('hotelMap', { scrollWheelZoom: true });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  var isEn = document.documentElement.getAttribute('data-ui-lang') === 'en';
+  var markers = HOTELS.map(function (h) {
+    var m = L.marker([h.renderLat, h.renderLng], { icon: createIcon(h.tier, isEn ? h.en : h.ko) });
+    m.hotelData = h;
+    m.addTo(map);
+    return m;
+  });
+
+  var group = L.featureGroup(markers);
+  map.fitBounds(group.getBounds(), { padding: [30, 30] });
 })();
 </script>
 </body>
