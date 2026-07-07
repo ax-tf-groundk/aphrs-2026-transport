@@ -4,3 +4,6 @@ _logo_backup_html/
 
 # internal QA / bug-report screenshots (not for public deploy)
 screenshots/
+
+# internal working docs — specs & plans (not for public deploy)
+docs/

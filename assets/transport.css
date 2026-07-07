@@ -334,6 +334,7 @@ h1,h2,h3,h4{line-height:1.16;letter-spacing:-.4px;text-wrap:balance}
   .nav-toggle{display:flex}
   .head-right .lang{display:none}
 }
+/* top:70px는 폴백값 — 실제 오프셋은 각 페이지 nav-toggle 스크립트가 열릴 때 .site-head 실측 높이로 덮어씀 (데모배너 줄바꿈 대응) */
 .mobile-nav{display:none;position:fixed;inset:70px 0 0 0;z-index:49;
   background:rgba(255,255,255,.97);backdrop-filter:blur(12px);
   flex-direction:column;padding:16px 0;border-top:1px solid var(--line-2);
