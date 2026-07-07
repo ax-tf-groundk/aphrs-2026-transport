@@ -7,3 +7,6 @@ screenshots/
 
 # internal working docs — specs & plans (not for public deploy)
 docs/
+
+# brainstorming visual-companion mockups (local session artifacts)
+.superpowers/
