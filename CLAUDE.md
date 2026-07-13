@@ -36,10 +36,6 @@ shuttle-hotel-airport.html   # 호텔 → 공항 셔틀 (유료)
 shuttle-venue.html           # 행사장 셔틀 호텔 ↔ BEXCO (무료)
 shuttle-chauffeur.html       # 전용차량 (프리미엄)
 booking.html                 # 공통 예약 폼 페이지 (서비스 타입별 동적 렌더)
-info-arrival.html            # 입국·도착 안내
-info-baggage.html            # 짐 배송 서비스
-info-esim.html               # 유심/eSIM
-info-ktx.html                # KTX 예매 안내
 assets/transport.css         # 단일 디자인 시스템 (v2, 자기완결)
 assets/app.js                # 공유 JS (reveal, lang toggle, 예약조회 모달)
 assets/img/                  # 이미지 자산

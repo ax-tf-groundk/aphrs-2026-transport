@@ -6,11 +6,9 @@
 <meta http-equiv="Cache-Control" content="no-cache">
 <title>행사장 셔틀 — 호텔↔BEXCO — APHRS 2026 부산 교통 | RIDEUS Events</title>
 <meta name="description" content="APHRS 2026 등록 참가자 무료 행사장 셔틀. 공식호텔↔BEXCO, 2026.10.21~24 운행. 노선·시간표·정류장 안내.">
-<meta name="version" content="2026.07.07.5">
-<link rel="stylesheet" href="assets/transport.css?v=2026.07.07.5">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
- integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
- crossorigin=""/>
+<meta name="version" content="2026.07.10.4">
+<link rel="stylesheet" href="assets/transport.css?v=2026.07.10.4">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css"/>
 <style>
   /* Venue schedule — 3개 노선 표를 데스크탑에서 3열로 배치 */
   .sched-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start;margin-bottom:14px;border-top:1px solid var(--line);padding-top:26px}
@@ -34,22 +32,33 @@
   /* 호텔 지도 */
   .hotel-map{height:460px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);margin-top:20px}
   @media(max-width:760px){.hotel-map{height:360px}}
-  .hotel-list-grid{display:grid;grid-template-columns:1fr 2fr;gap:30px;margin-top:24px}
-  @media(max-width:760px){.hotel-list-grid{grid-template-columns:1fr;gap:20px}}
-  .hlist-h{font-size:14px;font-weight:800;color:var(--ink);margin:0 0 10px}
+  .hotel-list-grid{display:grid;grid-template-columns:1fr 2fr;gap:44px;margin-top:30px}
+  @media(max-width:760px){.hotel-list-grid{grid-template-columns:1fr;gap:28px}}
+  .hlist-h{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800;letter-spacing:.2px;text-transform:uppercase;color:var(--navy);margin:0 0 16px;padding-bottom:11px;border-bottom:1px solid var(--line)}
+  .hlist-h::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--navy)}
   .hlist-h--vip{color:var(--red)}
-  .hlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
-  .hlist li{font-size:13.5px;color:var(--ink);padding-left:14px;position:relative}
-  .hlist li::before{content:"·";position:absolute;left:0;color:var(--muted);font-weight:800}
-  /* 지도 마커 (Leaflet divIcon) */
-  .hmap-pin{display:flex;flex-direction:column;align-items:center;pointer-events:none}
-  .hmap-pin .hmap-dot{display:block;border-radius:50%;background:var(--navy);border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.35)}
-  .hmap-pin--vip .hmap-dot{width:22px;height:22px;background:var(--red);border-width:3px;box-shadow:0 2px 6px rgba(0,0,0,.4)}
-  .hmap-pin--gen .hmap-dot{width:9px;height:9px}
-  .hmap-pin--bexco .hmap-dot--diamond{width:16px;height:16px;border-radius:3px;transform:rotate(45deg);background:var(--navy);border-width:3px}
-  .hmap-pin .hmap-label{margin-top:3px;font-size:9px;font-weight:600;color:var(--muted);white-space:nowrap;text-shadow:0 1px 2px #fff,0 -1px 2px #fff,1px 0 2px #fff,-1px 0 2px #fff}
-  .hmap-pin--vip .hmap-label{font-size:11.5px;font-weight:800;color:var(--ink)}
-  .hmap-pin--bexco .hmap-label{font-size:11.5px;font-weight:800;color:var(--navy)}
+  .hlist-h--vip::before{background:var(--red)}
+  .hlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px}
+  .hlist li{font-size:14px;color:var(--ink);display:flex;align-items:center;gap:10px;line-height:1.3}
+  .hlist-badge{flex:none;display:flex;align-items:center;justify-content:center;text-align:center;width:20px;height:20px;border-radius:50%;color:#fff;font-weight:800;font-size:10px}
+  .hlist-badge--vip{background:var(--red)}
+  .hlist-badge--gen{background:var(--navy);font-size:9.5px}
+  /* 지도 마커 (MapLibre GL 커스텀 DOM 마커) — 배지형: VIP=알파벳, 일반=숫자, 리스트와 매칭 */
+  .hmap-pin{display:flex;flex-direction:column;align-items:center}
+  .hmap-pin--vip,.hmap-pin--gen{cursor:pointer}
+  .hmap-pin .hmap-dot{display:flex;align-items:center;justify-content:center;text-align:center;border-radius:50%;background:var(--navy);border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.35);color:#fff;font-weight:800;line-height:1}
+  .hmap-pin--vip .hmap-dot{width:25px;height:25px;background:var(--red);border-width:2.5px;box-shadow:0 2px 7px rgba(0,0,0,.42);font-size:12px}
+  .hmap-pin--gen .hmap-dot{width:24px;height:24px;font-size:9.5px}
+  .hmap-pin--bexco{position:relative;width:32px;height:32px}
+  .hmap-pin--bexco .hmap-dot--diamond{width:32px;height:32px;border-radius:7px;transform:rotate(45deg);background:var(--amber);border-width:3px;box-shadow:0 3px 11px rgba(0,0,0,.45)}
+  .hmap-pin .hmap-label{margin-top:4px;font-size:9px;font-weight:600;color:var(--muted);white-space:nowrap;text-shadow:0 1px 2px #fff,0 -1px 2px #fff,1px 0 2px #fff,-1px 0 2px #fff}
+  .hmap-pin--bexco .hmap-label{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:4px;font-size:13px;font-weight:800;color:var(--navy)}
+  /* 호텔 마커 선택 말풍선 */
+  .hmap-popup{display:flex;align-items:center;gap:8px}
+  .hmap-popup .hlist-badge{font-size:10.5px}
+  .hmap-popup-name{font-size:15.5px;font-weight:700;color:var(--ink);white-space:nowrap}
+  .hotel-map .maplibregl-popup-content{border-radius:8px;box-shadow:0 10px 26px rgba(0,0,0,.22);padding:10px 13px}
+  .hotel-map .maplibregl-popup-tip{filter:drop-shadow(0 2px 3px rgba(0,0,0,.12))}
 </style>
 </head>
 <body>
@@ -297,6 +306,43 @@
   </div>
 </section>
 
+<!-- ===== FACULTY DINNER SHUTTLE (10/23 only) ===== -->
+<section class="section" style="padding-top:0" aria-labelledby="fd-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="sec-h" id="fd-h">
+        <span class="ko-only">Faculty Dinner 셔틀 <span style="font-size:.55em;font-weight:700;opacity:.85">10/23 한정</span></span>
+        <span class="en-only">Faculty Dinner Shuttle <span style="font-size:.55em;font-weight:700;opacity:.85">Oct 23 only</span></span>
+      </h2>
+      <p class="sec-sub ko-block">시그니엘 부산 Faculty Dinner 참석자를 위한 전용 셔틀입니다. 위 행사장 셔틀과 별도로 운영됩니다.</p>
+      <p class="sec-sub en-block">Dedicated shuttle for Faculty Dinner attendees at Signiel Busan. Operated separately from the venue shuttle above.</p>
+    </div>
+    <div class="route-rows">
+      <div class="rt-card reveal d1">
+        <span class="rt-tag"><span class="ko-only">가는 편</span><span class="en-only">To Dinner</span></span>
+        <div class="rt-path ko-only">벡스코 또는 주요호텔 <span class="ar" aria-hidden="true">→</span> 시그니엘</div>
+        <div class="rt-path en-only">BEXCO or Hotels <span class="ar" aria-hidden="true">→</span> Signiel</div>
+        <span class="rt-time">~15 min</span>
+      </div>
+      <div class="rt-card reveal d2">
+        <span class="rt-tag"><span class="ko-only">오는 편</span><span class="en-only">Return</span></span>
+        <div class="rt-path ko-only">시그니엘 <span class="ar" aria-hidden="true">→</span> 웨스틴조선 <span class="ar" aria-hidden="true">→</span> 파크하얏트</div>
+        <div class="rt-path en-only">Signiel <span class="ar" aria-hidden="true">→</span> Westin Josun <span class="ar" aria-hidden="true">→</span> Park Hyatt</div>
+        <span class="rt-time">~20 min</span>
+      </div>
+    </div>
+    <div class="warn-box reveal" style="margin-top:18px">
+      <div class="wb-icon"><svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div>
+      <div class="wb-body">
+        <h4 class="ko-block">Faculty Dinner 셔틀 안내</h4>
+        <h4 class="en-block">Faculty Dinner Shuttle Notice</h4>
+        <p class="ko-block"><b>Faculty Dinner 초청자 전용</b>이며 일반 등록 참가자는 이용하실 수 없습니다. 정확한 <b>출발 시각은 미확정</b>이며, 확정되는 대로 현장 안내판과 이메일로 공지됩니다. (10/23 참고 일정 — 세션 종료 16:50 · 리셉션 18:00 · 디너 18:30~20:00)</p>
+        <p class="en-block">For <b>invited Faculty Dinner guests only</b> — not available to general registered attendees. Exact <b>departure times are TBD</b> and will be announced via on-site boards and email once confirmed. (Oct 23 reference schedule — sessions end 16:50 · reception 18:00 · dinner 18:30–20:00)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===== STOPS ===== -->
 <section class="section" style="padding-top:0" aria-labelledby="stop-h">
   <div class="wrap">
@@ -383,27 +429,27 @@
       <div class="hotel-list-col">
         <h3 class="hlist-h hlist-h--vip"><span class="ko-only">주요인사 호텔</span><span class="en-only">VIP &amp; Organizing Committee</span></h3>
         <ul class="hlist">
-          <li><span class="ko-only">파크하얏트 부산</span><span class="en-only">Park Hyatt Busan</span></li>
-          <li><span class="ko-only">웨스틴조선 부산</span><span class="en-only">Westin Josun Busan</span></li>
-          <li><span class="ko-only">그랜드조선 해운대</span><span class="en-only">Grand Josun Haeundae</span></li>
-          <li><span class="ko-only">파라다이스 호텔 부산</span><span class="en-only">Paradise Hotel Busan</span></li>
-          <li><span class="ko-only">시그니엘 부산</span><span class="en-only">Signiel Busan</span></li>
+          <li><span class="hlist-badge hlist-badge--vip">A</span><span class="ko-only">파크하얏트 부산</span><span class="en-only">Park Hyatt Busan</span></li>
+          <li><span class="hlist-badge hlist-badge--vip">B</span><span class="ko-only">웨스틴조선 부산</span><span class="en-only">Westin Josun Busan</span></li>
+          <li><span class="hlist-badge hlist-badge--vip">C</span><span class="ko-only">그랜드조선 해운대</span><span class="en-only">Grand Josun Haeundae</span></li>
+          <li><span class="hlist-badge hlist-badge--vip">D</span><span class="ko-only">파라다이스 호텔 부산</span><span class="en-only">Paradise Hotel Busan</span></li>
+          <li><span class="hlist-badge hlist-badge--vip">E</span><span class="ko-only">시그니엘 부산</span><span class="en-only">Signiel Busan</span></li>
         </ul>
       </div>
       <div class="hotel-list-col">
         <h3 class="hlist-h"><span class="ko-only">일반참가자 호텔</span><span class="en-only">General Participant Hotels</span></h3>
         <ul class="hlist">
-          <li><span class="ko-only">L7 해운대 바이 롯데</span><span class="en-only">L7 Haeundae by LOTTE</span></li>
-          <li><span class="ko-only">트래블로지 스위트 부산 센텀</span><span class="en-only">Travelodge Suites Busan Centum</span></li>
-          <li><span class="ko-only">라마다 앙코르 바이 윈덤 부산 해운대</span><span class="en-only">Ramada Encore by Wyndham Busan Haeundae</span></li>
-          <li><span class="ko-only">펠릭스 바이 STX</span><span class="en-only">Felix by STX Hotel &amp; Suite</span></li>
-          <li><span class="ko-only">라비드 아틀란 호텔</span><span class="en-only">Lavi De Atlan Hotel</span></li>
-          <li><span class="ko-only">해운대 센트럴호텔</span><span class="en-only">Haeundae Central Hotel</span></li>
-          <li><span class="ko-only">플레아드블랑 호텔 앤 레지던스</span><span class="en-only">Plea De Blanc Hotel &amp; Residence</span></li>
-          <li><span class="ko-only">부산 영무파라드 호텔 해운대비치</span><span class="en-only">Busan Yeongmu Parade Hotel Haeundae Beach</span></li>
-          <li><span class="ko-only">블루스토리 호텔</span><span class="en-only">Blue Story Hotel</span></li>
-          <li><span class="ko-only">코오롱 씨클라우드 호텔</span><span class="en-only">Kolon Seacloud Hotel</span></li>
-          <li><span class="ko-only">해운대 마리안느 호텔</span><span class="en-only">Haeundae Marianne Hotel</span></li>
+          <li><span class="hlist-badge hlist-badge--gen">1</span><span class="ko-only">L7 해운대 바이 롯데</span><span class="en-only">L7 Haeundae by LOTTE</span></li>
+          <li><span class="hlist-badge hlist-badge--gen">2</span><span class="ko-only">트래블로지 스위트 부산 센텀</span><span class="en-only">Travelodge Suites Busan Centum</span></li>
+          <li><span class="hlist-badge hlist-badge--gen">3</span><span class="ko-only">라마다 앙코르 바이 윈덤 부산 해운대</span><span class="en-only">Ramada Encore by Wyndham Busan Haeundae</span></li>
+          <li><span class="hlist-badge hlist-badge--gen">4</span><span class="ko-only">펠릭스 바이 STX</span><span class="en-only">Felix by STX Hotel &amp; Suite</span></li>
+          <li><span class="hlist-badge hlist-badge--gen">5</span><span class="ko-only">라비드 아틀란 호텔</span><span class="en-only">Lavi De Atlan Hotel</span></li>
+          <li><span class="hlist-badge hlist-badge--gen">6</span><span class="ko-only">해운대 센트럴호텔</span><span class="en-only">Haeundae Central Hotel</span></li>
+          <li><span class="hlist-badge hlist-badge--gen">7</span><span class="ko-only">플레아드블랑 호텔 앤 레지던스</span><span class="en-only">Plea De Blanc Hotel &amp; Residence</span></li>
+          <li><span class="hlist-badge hlist-badge--gen">8</span><span class="ko-only">부산 영무파라드 호텔 해운대비치</span><span class="en-only">Busan Yeongmu Parade Hotel Haeundae Beach</span></li>
+          <li><span class="hlist-badge hlist-badge--gen">9</span><span class="ko-only">블루스토리 호텔</span><span class="en-only">Blue Story Hotel</span></li>
+          <li><span class="hlist-badge hlist-badge--gen">10</span><span class="ko-only">코오롱 씨클라우드 호텔</span><span class="en-only">Kolon Seacloud Hotel</span></li>
+          <li><span class="hlist-badge hlist-badge--gen">11</span><span class="ko-only">해운대 마리안느 호텔</span><span class="en-only">Haeundae Marianne Hotel</span></li>
         </ul>
       </div>
     </div>
@@ -460,7 +506,7 @@
       <b>GroundK Co., Ltd</b> · 대표 장동원 · 사업자등록번호 238-81-00429<br>
       부산광역시 해운대구 센텀동로 45, 405호 (우 48059) · Tel +82-2-863-3540 · Fax +82-70-8275-3540 · ops@groundk.com<br>
       <span class="ko-only">RIDEUS는 GroundK의 Transportation × Travel 플랫폼입니다. 모든 거래·교환·환불·민원은 GroundK가 처리합니다.</span><span class="en-only">RIDEUS is GroundK's Transportation × Travel platform. All transactions, exchanges, refunds &amp; inquiries are handled by GroundK.</span><br>
-      <span class="ver">© 2026 GroundK · <span class="ko-only">APHRS 2026 참가자 교통 포털 (콘셉트 데모)</span><span class="en-only">APHRS 2026 Participant Transport Portal (Concept Demo)</span> · build 2026.07.07.5</span>
+      <span class="ver">© 2026 GroundK · <span class="ko-only">APHRS 2026 참가자 교통 포털 (콘셉트 데모)</span><span class="en-only">APHRS 2026 Participant Transport Portal (Concept Demo)</span> · build 2026.07.10.4</span>
     </div>
   </div>
 </footer>
@@ -482,7 +528,7 @@
   </div>
 </div>
 
-<script src="assets/app.js?v=2026.07.07.5"></script>
+<script src="assets/app.js?v=2026.07.10.4"></script>
 
 <script>
 (function(){
@@ -510,11 +556,9 @@
   });
 })();
 </script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
- integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
- crossorigin=""></script>
+<script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
 <script>
-(function(){
+(async function(){
   var HOTELS = [
     {tier:'bexco', ko:'벡스코', en:'BEXCO', lat:35.169071, lng:129.136306},
     {tier:'vip', ko:'파크하얏트 부산', en:'Park Hyatt Busan', lat:35.156558, lng:129.141864},
@@ -572,44 +616,91 @@
     }
   }
 
-  function createIcon(tier, label) {
-    var cls = 'hmap-pin ' + (tier === 'vip' ? 'hmap-pin--vip' : tier === 'bexco' ? 'hmap-pin--bexco' : 'hmap-pin--gen');
-    var shape = tier === 'bexco' ? '<span class="hmap-dot hmap-dot--diamond"></span>' : '<span class="hmap-dot"></span>';
-    return L.divIcon({
-      className: cls,
-      html: shape + '<span class="hmap-label">' + label + '</span>',
-      iconSize: null,
-      iconAnchor: tier === 'vip' ? [11, 11] : tier === 'bexco' ? [10, 10] : [4.5, 4.5]
-    });
+  function createMarkerEl(tier, badge, label) {
+    var pin = document.createElement('div');
+    pin.className = 'hmap-pin ' + (tier === 'vip' ? 'hmap-pin--vip' : tier === 'bexco' ? 'hmap-pin--bexco' : 'hmap-pin--gen');
+    if (tier === 'bexco') {
+      var dot = document.createElement('span');
+      dot.className = 'hmap-dot hmap-dot--diamond';
+      var lbl = document.createElement('span');
+      lbl.className = 'hmap-label';
+      lbl.textContent = label;
+      pin.appendChild(dot);
+      pin.appendChild(lbl);
+    } else {
+      var badgeEl = document.createElement('span');
+      badgeEl.className = 'hmap-dot';
+      badgeEl.textContent = badge;
+      pin.appendChild(badgeEl);
+    }
+    return pin;
   }
 
   var el = document.getElementById('hotelMap');
-  if (!el || typeof L === 'undefined') return;
+  if (!el || typeof maplibregl === 'undefined') return;
 
   applyDeoverlap(HOTELS, 25, 18);
 
-  var map = L.map('hotelMap', { scrollWheelZoom: true });
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map);
+  var mapStyle = 'https://tiles.openfreemap.org/styles/bright';
+  try {
+    var styleRes = await fetch(mapStyle);
+    var styleJson = await styleRes.json();
+    styleJson.layers = styleJson.layers.filter(function (l) { return l['source-layer'] !== 'poi'; });
+    mapStyle = styleJson;
+  } catch (e) { /* fetch failed — fall back to unmodified style URL */ }
+
+  var map = new maplibregl.Map({
+    container: 'hotelMap',
+    style: mapStyle,
+    center: [129.16, 35.16],
+    zoom: 13,
+    attributionControl: { compact: false }
+  });
+  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-left');
+
+  function popupHtml(h, isEnNow) {
+    var badgeClass = h.tier === 'vip' ? 'hlist-badge--vip' : 'hlist-badge--gen';
+    return '<div class="hmap-popup"><span class="hlist-badge ' + badgeClass + '">' + h.badge + '</span><span class="hmap-popup-name">' + (isEnNow ? h.en : h.ko) + '</span></div>';
+  }
 
   var isEn = document.documentElement.getAttribute('data-ui-lang') === 'en';
+  var VIP_LETTERS = ['A', 'B', 'C', 'D', 'E'];
+  var vipI = 0, genI = 0;
+  var popups = [];
+  var bounds = new maplibregl.LngLatBounds();
   var markers = HOTELS.map(function (h) {
-    var m = L.marker([h.renderLat, h.renderLng], { icon: createIcon(h.tier, isEn ? h.en : h.ko) });
+    if (h.tier === 'vip') h.badge = VIP_LETTERS[vipI++];
+    else if (h.tier === 'gen') h.badge = String(++genI);
+    var markerEl = createMarkerEl(h.tier, h.badge, isEn ? h.en : h.ko);
+    var m = new maplibregl.Marker({ element: markerEl, anchor: 'center' })
+      .setLngLat([h.renderLng, h.renderLat])
+      .addTo(map);
     m.hotelData = h;
-    m.addTo(map);
+    if (h.tier !== 'bexco') {
+      var popup = new maplibregl.Popup({ closeButton: false, offset: 16 }).setHTML(popupHtml(h, isEn));
+      popup.on('open', function () {
+        popups.forEach(function (p) { if (p !== popup) p.remove(); });
+      });
+      popups.push(popup);
+      m.setPopup(popup);
+    }
+    bounds.extend([h.renderLng, h.renderLat]);
     return m;
   });
 
-  var group = L.featureGroup(markers);
-  map.fitBounds(group.getBounds(), { padding: [30, 30] });
+  map.fitBounds(bounds, { padding: 40, duration: 0 });
 
   function syncLang() {
     var isEnNow = document.documentElement.getAttribute('data-ui-lang') === 'en';
     markers.forEach(function (m) {
       var h = m.hotelData;
-      m.setIcon(createIcon(h.tier, isEnNow ? h.en : h.ko));
+      if (h.tier === 'bexco') {
+        var lbl = m.getElement().querySelector('.hmap-label');
+        if (lbl) lbl.textContent = isEnNow ? h.en : h.ko;
+      } else {
+        var popup = m.getPopup();
+        if (popup) popup.setHTML(popupHtml(h, isEnNow));
+      }
     });
   }
   new MutationObserver(syncLang).observe(document.documentElement, { attributes: true, attributeFilter: ['data-ui-lang'] });
